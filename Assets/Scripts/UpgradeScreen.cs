@@ -17,7 +17,7 @@ public class UpgradeScreen : MonoBehaviour{
     private void Awake(){
         cg.alpha = 0;
         p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        //GetUpgrade();
+        GetUpgrade();
     }
 
     private void Update(){
@@ -31,13 +31,21 @@ public class UpgradeScreen : MonoBehaviour{
         
         //eventually want to make sure random numbers dont repeat
         
-        int rand1 = Random.Range(0, descs.Length);
+        int rand1 = 0;
         up1.Set(descs[rand1]);
         
         int rand2 = Random.Range(0, descs.Length);
+        while (rand2 == rand1){
+            rand2 = Random.Range(0, descs.Length);
+
+        }
         up2.Set(descs[rand2]);
         
         int rand3 = Random.Range(0, descs.Length);
+        while (rand3 == rand1 || rand3 == rand2 ){
+            rand3 = Random.Range(0, descs.Length);
+
+        }
         up3.Set(descs[rand3]);
 
     }

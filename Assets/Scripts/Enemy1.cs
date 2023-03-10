@@ -23,8 +23,8 @@ public class Enemy1 : MonoBehaviour, IDamagable{
     private float Health;
     private float maxHealth = 100;
     [HideInInspector] StateEnum State;
-    private float xVel = 1500;
-    private float jumpV = 800;
+    private float xVel = 1600;
+    private float jumpV = 900;
     private float Itime = 0; //invincibilty time
 
     //Other Stuff
@@ -52,7 +52,28 @@ public class Enemy1 : MonoBehaviour, IDamagable{
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
+    [SerializeField] private Transform m_GroundCheck;
+    private bool m_Grounded;
+
+    [SerializeField] private Transform PitCheck;
+
     void FixedUpdate(){
+        //ground check
+        bool wasGrounded = m_Grounded;
+        m_Grounded = false;
+
+        Collider2D[] colliders =
+            Physics2D.OverlapBoxAll(m_GroundCheck.position, new Vector2(0.48f, 0.056f), 0, level.value);
+
+        for (int i = 0; i < colliders.Length; i++){
+            if (colliders[i].gameObject != gameObject){
+                m_Grounded = true;
+                if (!wasGrounded){
+                    //landing sound
+                }
+            }
+        }
+
         //Line Renderer lerp stuff:
         lr.SetPosition(1, Vector2.Lerp(lr.GetPosition(1), lrTopos, 10 * Time.deltaTime));
 
@@ -249,11 +270,22 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
                     if (stairhit.collider != null){
                         stairVal++;
-                        if (stairVal > 4){
+                        if (stairVal > 5 && m_Grounded){
                             stairVal = 0;
                             //jump!
-                            //*need to check if grounded but can do that later
                             rb.AddForce(transform.up * jumpV);
+                        }
+                    }
+
+                    //check for pit below, in case u need to jump over
+                    RaycastHit2D pithit = Physics2D.BoxCast(PitCheck.position,
+                        new Vector2(0.1f,0.1f), 0, transform.up, 0, level.value);
+
+                    if (pithit.collider == null){ //want to check if there is nothing below
+                        stairVal++;
+                        if (stairVal > 4 && m_Grounded){
+                            stairVal = 0;
+                            rb.AddForce(transform.up * jumpV*1.3f); //higher jumps over pit
                         }
                     }
                 }
@@ -307,8 +339,8 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
     public void takeDamage(int dmg, Vector3 hit){
         //If marked, double damage
-        dmg *= marked ? 2: 1;
-        
+        dmg *= marked ? 2 : 1;
+
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
             Itime = 0.2f;

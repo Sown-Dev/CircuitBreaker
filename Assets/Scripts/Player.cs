@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour, IDamagable{
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour, IDamagable{
     public LayerMask myLayer;
     public SpriteRenderer sr;
 
+    private int maxJumps;
     void Awake(){
         dashAC.SetActive(false);
         attackAC.SetActive(false);
@@ -47,11 +49,12 @@ public class Player : MonoBehaviour, IDamagable{
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, 0.23f, level.value);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(m_GroundCheck.position,new Vector2(0.48f,0.056f), 0,level.value);
+
         for (int i = 0; i < colliders.Length; i++){
             if (colliders[i].gameObject != gameObject){
                 m_Grounded = true;
-                jumpCache = 1;
+                jumpCache = maxJumps;
                 if (!wasGrounded){
                     //landing sound
                 }
@@ -64,7 +67,7 @@ public class Player : MonoBehaviour, IDamagable{
         if (dashCooldown > 0){
             dashCooldown -= Time.deltaTime;
         }
-        if (Input.GetKeyDown(KeyCode.Space)){
+        if (Input.GetMouseButtonDown(0)){
             Attack();
         }
 
@@ -81,7 +84,7 @@ public class Player : MonoBehaviour, IDamagable{
             //transform.localScale = new Vector3(1, 1, 1);
         }
 
-        if ((Input.GetKeyDown(KeyCode.W)) && m_Grounded){
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && m_Grounded){
             yv += 1;
             Instantiate(dust, transform.position, Quaternion.identity);
             am.SetTrigger("Jump");
@@ -193,8 +196,16 @@ public class Player : MonoBehaviour, IDamagable{
         if (Index > -1){ //-1 adds shield
             itemMans[Index].Add();
         }
+        
         else{
-            shields++;
+            if (Index == -1){ //-1 adds shield
+                shields++;
+                
+            }
+            if (Index == -2){ //-1 adds shield
+                maxJumps++;
+            }
+            
         }
     }
 }
