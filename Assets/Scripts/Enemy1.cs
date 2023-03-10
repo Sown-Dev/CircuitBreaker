@@ -5,12 +5,13 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class Enemy1 : MonoBehaviour, IDamagable{
     //Gradients
     public Gradient redCol;
     public Gradient shootingCol;
-    
+
     //Prefabs
     public GameObject bullet;
     public GameObject blood;
@@ -39,7 +40,11 @@ public class Enemy1 : MonoBehaviour, IDamagable{
     float shootDelay;
     public LineRenderer lr;
 
+
+    private bool marked;
+
     private void Awake(){
+        marker.SetActive(false);
         State = StateEnum.Passive;
         Health = maxHealth;
         aware = false;
@@ -49,9 +54,9 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
     void FixedUpdate(){
         //Line Renderer lerp stuff:
-        lr.SetPosition(1, Vector2.Lerp(lr.GetPosition(1), lrTopos, 10*Time.deltaTime));
-        
-        
+        lr.SetPosition(1, Vector2.Lerp(lr.GetPosition(1), lrTopos, 10 * Time.deltaTime));
+
+
         am.SetInteger("State", (int)State);
         am.SetFloat("Speed", math.abs(rb.velocity.x));
         am.SetBool("Falling", math.abs(rb.velocity.y) > 0.05f);
@@ -60,6 +65,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
         if (shootDelay > 0){
             shootDelay -= Time.deltaTime;
         }
+
         if (shootWait > 0){
             shootWait -= Time.deltaTime;
         }
@@ -81,25 +87,28 @@ public class Enemy1 : MonoBehaviour, IDamagable{
     private Vector3 shootpos;
     private float shootWait;
     private Vector2 lrTopos;
+
     void Tick(){
-        
         lr.enabled = false;
         //Have Raycast behind to detect player if they are there for long enough:
 
 
         //AI: start by raycasting:
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, (_player.transform.position-transform.position).normalized, range, both.value);
-        
+        RaycastHit2D hit = Physics2D.Raycast(transform.position,
+            (_player.transform.position - transform.position).normalized, range, both.value);
+
         if (hit.collider != null){
-            if (((1 << hit.collider.gameObject.layer) & player.value) != 0 ){
+            if (((1 << hit.collider.gameObject.layer) & player.value) != 0){
                 if (visibility < 40){
                     visibility++;
                 }
+
                 lastSeen = hit.collider.transform.position; // set last seen to the hit.
 
 
-                if (State != StateEnum.Shooting && visibility>30 && State != StateEnum.ShootingDelay){ //can enter shooting from any state
+                if (State != StateEnum.Shooting && visibility > 30 && State != StateEnum.ShootingDelay){
+                    //can enter shooting from any state
                     shootDelay = 0.4f; //start with some delay so you don't instantly die
                     State = StateEnum.Shooting;
                 }
@@ -122,39 +131,42 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                 if (shothit.collider != null){
                     lr.enabled = true;
                     lr.SetPosition(0, lr.transform.position);
-                    lrTopos=shothit.point;
+                    lrTopos = shothit.point;
                 }
                 else{
                     lr.enabled = true;
                     lr.SetPosition(0, lr.transform.position);
-                    lrTopos=(_player.transform.position - transform.position).normalized * range + transform.position;
+                    lrTopos = (_player.transform.position - transform.position).normalized * range + transform.position;
                 }
+
                 arms.SetActive(true);
                 arms.transform.right = (shootpos - transform.position) * transform.localScale.x;
-                if (shootWait <=0){
+                if (shootWait <= 0){
                     State = StateEnum.Shooting;
                     am.SetTrigger("Shoot");
                     Shoot();
                     shootDelay = 1.1f;
                 }
+
                 break;
             }
             case (StateEnum.Shooting):{
                 lr.colorGradient = redCol;
 
-                RaycastHit2D shothit = Physics2D.Raycast(transform.position, (_player.transform.position-transform.position).normalized, range, level.value);
+                RaycastHit2D shothit = Physics2D.Raycast(transform.position,
+                    (_player.transform.position - transform.position).normalized, range, level.value);
 
                 if (shothit.collider != null){
                     lr.enabled = true;
                     lr.SetPosition(0, lr.transform.position);
-                    lrTopos=shothit.point;
+                    lrTopos = shothit.point;
                 }
                 else{
                     lr.enabled = true;
                     lr.SetPosition(0, lr.transform.position);
-                    lrTopos=(_player.transform.position-transform.position).normalized*range + transform.position;
+                    lrTopos = (_player.transform.position - transform.position).normalized * range + transform.position;
                 }
-                
+
                 if (_player.transform.position.x > transform.position.x){
                     transform.localScale = new Vector3(1, 1, 1);
                 }
@@ -162,13 +174,13 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                     transform.localScale = new Vector3(-1, 1, 1);
                 }
 
-                
+
                 arms.SetActive(true);
                 arms.transform.right = (_player.transform.position - transform.position) * transform.localScale.x;
-                
+
                 if (Itime <= 0 && shootDelay <= 0){
                     State = StateEnum.ShootingDelay;
-                    shootWait = 0.2f;
+                    shootWait = 0.3f;
                     aware = true;
                     shootpos = _player.transform.position;
                 }
@@ -176,7 +188,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                 if (visibility <= 0){
                     State = StateEnum.Searching;
                 }
-                
+
 
                 break;
             }
@@ -206,7 +218,8 @@ public class Enemy1 : MonoBehaviour, IDamagable{
             case (StateEnum.Searching):{
                 arms.SetActive(false);
                 //gives position of player
-                if (!Physics2D.Linecast(transform.position+ new Vector3(0,0.4f,0), _player.transform.position, level.value)){ //we rais the origin so that we cast from the head
+                if (!Physics2D.Linecast(transform.position + new Vector3(0, 0.4f, 0), _player.transform.position,
+                        level.value)){ //we rais the origin so that we cast from the head
                     awarenesstime = 0;
                     lastSeen = _player.transform.position;
                 }
@@ -245,14 +258,13 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                     }
                 }
                 else{
-                    if(!aware)
+                    if (!aware)
                         State = StateEnum.Passive;
                 }
 
 
                 break;
             }
-            
         }
     }
 
@@ -281,19 +293,22 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
         if (State == StateEnum.Searching){
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position+ new Vector3(0,0.4f,0), lastSeen);
+            Gizmos.DrawLine(transform.position + new Vector3(0, 0.4f, 0), lastSeen);
         }
         //Handles.Label(transform.position+ new Vector3(0, 1, 0), State.ToString());
     }
 
     enum StateEnum{
-        Passive=1,
-        Searching=2,
-        Shooting=3,
-        ShootingDelay=4
+        Passive = 1,
+        Searching = 2,
+        Shooting = 3,
+        ShootingDelay = 4
     };
 
     public void takeDamage(int dmg, Vector3 hit){
+        //If marked, double damage
+        dmg *= marked ? 2: 1;
+        
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
             Itime = 0.2f;
@@ -306,17 +321,23 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                 Health -= dmg;
             }
             else{
-                TimeMan.tm.TimeFreeze(0.2f,0.5f);
+                TimeMan.tm.TimeFreeze(0.2f, 0.5f);
                 Health = 0;
                 Die();
             }
         }
     }
 
-    
+    public GameObject marker;
+
+    public void mark(){
+        marked = true;
+        marker.SetActive(true);
+    }
+
 
     void Die(){
-        ScreenShake.camShake.Shake(0.2f,0.2f);
+        ScreenShake.camShake.Shake(0.2f, 0.2f);
         Instantiate(gibs, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
