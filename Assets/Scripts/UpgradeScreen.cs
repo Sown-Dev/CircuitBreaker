@@ -22,6 +22,7 @@ public class UpgradeScreen : MonoBehaviour{
 
     private void Update(){
         cg.interactable = toA> 0.1f;
+        cg.blocksRaycasts = (toA> 0.1f);
         cg.alpha = Mathf.Lerp(cg.alpha, toA, 10*Time.deltaTime);
     }
 

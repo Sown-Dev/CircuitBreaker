@@ -283,7 +283,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position+ new Vector3(0,0.4f,0), lastSeen);
         }
-        Handles.Label(transform.position+ new Vector3(0, 1, 0), State.ToString());
+        //Handles.Label(transform.position+ new Vector3(0, 1, 0), State.ToString());
     }
 
     enum StateEnum{
