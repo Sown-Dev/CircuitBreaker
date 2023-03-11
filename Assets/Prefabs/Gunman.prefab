@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964a0b26264ba50439f3c742b325292c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  marker: {fileID: 4858718463117453120}
+  marked: 0
   redCol:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 0.84313726}
@@ -224,7 +226,6 @@ MonoBehaviour:
   lr: {fileID: 3235690207538858726}
   m_GroundCheck: {fileID: 1910898800}
   PitCheck: {fileID: 5341892557111952566}
-  marker: {fileID: 4858718463117453120}
 --- !u!1 &322078095003014782
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +673,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8799347638577826829}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.152, y: 0.512, z: -0.0020162675}
+  m_LocalPosition: {x: -0.152, y: 0.512, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -722,8 +723,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 3.2299368, y: 1.3338609, z: 1.4085872}
+  - {x: -1000, y: -10000, z: 0}
+  - {x: -100, y: -200000, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.011

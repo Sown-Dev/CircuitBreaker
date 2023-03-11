@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class Enemy1 : MonoBehaviour, IDamagable{
+public class Enemy1 : EnemyClass, IDamagable{
     //Gradients
     public Gradient redCol;
     public Gradient shootingCol;
@@ -40,8 +40,6 @@ public class Enemy1 : MonoBehaviour, IDamagable{
     float shootDelay;
     public LineRenderer lr;
 
-
-    private bool marked;
 
     private void Awake(){
         marker.SetActive(false);
@@ -369,12 +367,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
         }
     }
 
-    public GameObject marker;
-
-    public void mark(){
-        marked = true;
-        marker.SetActive(true);
-    }
+    
 
 
     void Die(){

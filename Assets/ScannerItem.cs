@@ -11,11 +11,13 @@ public class ScannerItem : ItemMan{
     public AudioClip scan;
     public override void Add(){
         tElapsed = 0;
+        amount++;
     }
 
     private float maxTime = 5;
     private float tElapsed;
     private void Update(){
+        maxTime = (float)(5f * Math.Pow(1,(0.8*amount)));
         if (amount > 0){
             tElapsed += Time.deltaTime;
             if (tElapsed > maxTime){
@@ -29,7 +31,8 @@ public class ScannerItem : ItemMan{
         asrc.PlayOneShot(scan, 0.4f);
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(19, 11),0,  transform.up,1000, enemies.value);
         if (hit.collider != null){
-            hit.collider.gameObject.GetComponent<Enemy1>().mark();
+            if(!hit.collider.gameObject.GetComponent<EnemyClass>().marked)
+                hit.collider.gameObject.GetComponent<EnemyClass>().mark();
         }
     }
 }

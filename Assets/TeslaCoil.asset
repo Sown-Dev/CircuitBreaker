@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bc79e233da45779e954c12b19eaf9c, type: 3}
   m_Name: TeslaCoil
   m_EditorClassIdentifier: 
-  name: Taser Mod
-  icon: {fileID: 21300000, guid: f9f4bddde0ea6184eb76979dfbfc4638, type: 3}
-  description: Makes enemies get stunned for longer and increases sword damage
-  ID: -3
+  name: Tesla Coil
+  icon: {fileID: 21300000, guid: 13a4a3f51261cbb4487ba3b1f60f92d1, type: 3}
+  description: Shocks nearby enemies! Upgrades increase range and frequency
+  ID: 2

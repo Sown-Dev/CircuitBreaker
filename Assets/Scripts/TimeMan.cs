@@ -7,7 +7,7 @@ public class TimeMan : MonoBehaviour{
     public static TimeMan tm;
 
     private void Awake(){
-        //Time.timeScale = 0.5f;
+        Time.timeScale = 1f;
         tm = this;
     }
 

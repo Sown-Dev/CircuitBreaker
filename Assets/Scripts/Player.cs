@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IDamagable{
     [HideInInspector] public int shields;
 
     public int damage = 40;
-
+    public bool platforms;
     public GameObject dust;
 
     public GameObject dashAC;
@@ -109,6 +109,8 @@ public class Player : MonoBehaviour, IDamagable{
             xv += 1;
             //transform.localScale = new Vector3(1, 1, 1);
         }
+
+        platforms = Input.GetKey(KeyCode.S);
 
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && m_Grounded){
             yv += 1;

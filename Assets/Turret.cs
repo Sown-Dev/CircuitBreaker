@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class Turret : MonoBehaviour, IDamagable{
+public class Turret : EnemyClass, IDamagable{
     //Gradients
     public Gradient redCol;
     public Gradient shootingCol;
@@ -20,7 +20,7 @@ public class Turret : MonoBehaviour, IDamagable{
 
     //Health and Stats
     private float Health;
-    private float maxHealth = 200;
+    public float maxHealth = 200;
     [HideInInspector] StateEnum State;
 
     private float Itime = 0; //invincibilty time
@@ -38,7 +38,6 @@ public class Turret : MonoBehaviour, IDamagable{
     public LineRenderer lr;
 
 
-    private bool marked;
 
     private void Awake(){
         marker.SetActive(false);
@@ -87,7 +86,8 @@ public class Turret : MonoBehaviour, IDamagable{
     private Vector2 lrTopos;
 
     int burst;
-    private int maxBurst=4;
+    public int maxBurst=4;
+    public float shotWaitMax = 0.08f;
     void Tick(){
         lr.enabled = false;
         //Have Raycast behind to detect player if they are there for long enough:
@@ -144,7 +144,7 @@ public class Turret : MonoBehaviour, IDamagable{
                     if (burst < maxBurst){
                         am.SetTrigger("Shoot");
                         Shoot();
-                        shootWait = 0.08f;
+                        shootWait = shotWaitMax;
                     }
                     burst++;
 
@@ -288,13 +288,7 @@ public class Turret : MonoBehaviour, IDamagable{
             }
         }
     }
-
-    public GameObject marker;
-
-    public void mark(){
-        marked = true;
-        marker.SetActive(true);
-    }
+    
 
 
     void Die(){
