@@ -86,6 +86,8 @@ public class Turret : MonoBehaviour, IDamagable{
     private float shootWait;
     private Vector2 lrTopos;
 
+    int burst;
+    private int maxBurst=4;
     void Tick(){
         lr.enabled = false;
         //Have Raycast behind to detect player if they are there for long enough:
@@ -107,7 +109,7 @@ public class Turret : MonoBehaviour, IDamagable{
 
                 if (State != StateEnum.Shooting && visibility > 30 && State != StateEnum.ShootingDelay){
                     //can enter shooting from any state
-                    shootDelay = 0.4f; //start with some delay so you don't instantly die
+                    shootDelay = 1f; //start with some delay so you don't instantly die
                     State = StateEnum.Shooting;
                 }
             }
@@ -119,7 +121,7 @@ public class Turret : MonoBehaviour, IDamagable{
             visibility = 0;
         }
 
-
+       
         switch (State){
             case (StateEnum.ShootingDelay):{
                 
@@ -139,10 +141,17 @@ public class Turret : MonoBehaviour, IDamagable{
                 }
                 turretHead.transform.right = (shootpos - transform.position) * -transform.localScale.x;
                 if (shootWait <= 0){
-                    State = StateEnum.Shooting;
-                    am.SetTrigger("Shoot");
-                    Shoot();
-                    shootDelay = 1.1f;
+                    if (burst < maxBurst){
+                        am.SetTrigger("Shoot");
+                        Shoot();
+                        shootWait = 0.08f;
+                    }
+                    burst++;
+
+                    if (burst >= maxBurst+5){ //add 5 frames to not instantly transition
+                        shootDelay = 2f;
+                        State = StateEnum.Shooting;
+                    }
                 }
 
                 break;
@@ -174,6 +183,7 @@ public class Turret : MonoBehaviour, IDamagable{
                 turretHead.transform.right = (_player.transform.position - transform.position) * -transform.localScale.x;
 
                 if (Itime <= 0 && shootDelay <= 0){
+                    burst = 0;
                     State = StateEnum.ShootingDelay;
                     shootWait = 0.3f;
                     aware = true;

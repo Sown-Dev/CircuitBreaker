@@ -255,7 +255,7 @@ public class Player : MonoBehaviour, IDamagable{
                 extrastun += 0.5f;
             }
             if (Index == -4){
-                moveV += 100f;
+                moveV += 120f;
                 jumpV += 100f;
             }
         }

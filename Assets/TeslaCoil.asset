@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5bc79e233da45779e954c12b19eaf9c, type: 3}
-  m_Name: Stim
+  m_Name: TeslaCoil
   m_EditorClassIdentifier: 
-  name: Loatropacin
-  icon: {fileID: 21300000, guid: d1928201bcd2e514098db68a53afca25, type: 3}
-  description: Combat stimulant that permantly boosts speed and jump height by 10%.
-  ID: -4
+  name: Taser Mod
+  icon: {fileID: 21300000, guid: f9f4bddde0ea6184eb76979dfbfc4638, type: 3}
+  description: Makes enemies get stunned for longer and increases sword damage
+  ID: -3

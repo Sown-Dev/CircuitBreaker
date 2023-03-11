@@ -31,7 +31,7 @@ public class UpgradeScreen : MonoBehaviour{
         
         //eventually want to make sure random numbers dont repeat
         
-        int rand1 = 0;
+        int rand1 = Random.Range(0, descs.Length);;
         up1.Set(descs[rand1]);
         
         int rand2 = Random.Range(0, descs.Length);
