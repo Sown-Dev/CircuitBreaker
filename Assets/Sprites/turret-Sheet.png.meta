@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c5b0240ada8a34546be22f573c805b4e
+guid: 167839bce25bcfc4ca2c885e59ec52f1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,126 +117,148 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tiles1-Sheet 1_0
+      name: turret-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 36
-        height: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: -16}
-        - {x: -16, y: 16}
-        - {x: 16, y: 16}
-        - {x: 16, y: -16}
+      outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd03578a56c64a044a7cac8d2edc6719
-      internalID: 1690263615
+      spriteID: 19c00aab2d6555443a68608b7dfcade5
+      internalID: 556024247
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles1-Sheet 1_1
+      name: turret-Sheet_1
       rect:
         serializedVersion: 2
-        x: 36
+        x: 64
         y: 0
-        width: 36
-        height: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: -16}
-        - {x: -16, y: 16}
-        - {x: 16, y: 16}
-        - {x: 16, y: -16}
+      outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a64e1bbd2e419314dace82230a36864b
-      internalID: -25675671
+      spriteID: 4fafcf20dc8cf0045b1ea0de1ad54eba
+      internalID: 1050536577
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles1-Sheet 1_2
+      name: turret-Sheet_2
       rect:
         serializedVersion: 2
-        x: 72
+        x: 128
         y: 0
-        width: 36
-        height: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: -16}
-        - {x: -16, y: 16}
-        - {x: 16, y: 16}
-        - {x: 16, y: -16}
+      outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21fcba25e12782d49a6e06e9fe9b6e9a
-      internalID: -88296442
+      spriteID: 21b536d2b85b8364fb010a4faeaa805b
+      internalID: -1257408
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles1-Sheet 1_3
+      name: turret-Sheet_3
       rect:
         serializedVersion: 2
-        x: 108
+        x: 192
         y: 0
-        width: 36
-        height: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: -16}
-        - {x: -16, y: 16}
-        - {x: 16, y: 16}
-        - {x: 16, y: -16}
+      outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e6d4f00f0f6a8a438ef155b9b08c2f8
-      internalID: -258745191
+      spriteID: fc8e367bc78ee8c4fbb408edfcfaf44d
+      internalID: 270829587
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiles1-Sheet 1_4
+      name: turret-Sheet_4
       rect:
         serializedVersion: 2
-        x: 144
+        x: 256
         y: 0
-        width: 36
-        height: 36
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: -16}
-        - {x: -16, y: 16}
-        - {x: 16, y: 16}
-        - {x: 16, y: -16}
+      outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa50281bc00464e47bb7618ac3f70f56
-      internalID: -226279496
+      spriteID: cd07429427fa84246819411e59917fcd
+      internalID: 2123728085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: turret-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8dec15b37ed1cbc4cbce5bdd25c0e1da
+      internalID: 1827477553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: turret-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31e6375b0ea8bf844a2e05c5ab55db8e
+      internalID: -1835961479
       vertices: []
       indices: 
       edges: []
@@ -252,11 +274,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tiles1-Sheet 1_0: 1690263615
-      Tiles1-Sheet 1_3: -258745191
-      Tiles1-Sheet 1_1: -25675671
-      Tiles1-Sheet 1_2: -88296442
-      Tiles1-Sheet 1_4: -226279496
+      turret-Sheet_4: 2123728085
+      turret-Sheet_1: 1050536577
+      turret-Sheet_3: 270829587
+      turret-Sheet_0: 556024247
+      turret-Sheet_6: -1835961479
+      turret-Sheet_5: 1827477553
+      turret-Sheet_2: -1257408
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62fbeace8056264db339d646787ef44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shrapnel: {fileID: 2285395539998221841, guid: 00c4567017a7949438b92e1a4316114b, type: 3}
   rb: {fileID: 2178784942440038387}
 --- !u!50 &2178784942440038387
 Rigidbody2D:

@@ -37,13 +37,15 @@ public class Player : MonoBehaviour, IDamagable{
     
     private int maxJumps;
 
+    public ParticleSystem shatter;
+
     void Awake(){
         dashAC.SetActive(false);
         attackAC.SetActive(false);
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    private float jumpV = 1100;
+    private float jumpV = 1190;
     private float moveV = 1000;
 
     private bool m_Grounded;
@@ -75,8 +77,8 @@ public class Player : MonoBehaviour, IDamagable{
     bool prevblocking;
     public float blockHealth;
     //blocking params:
-    public float blockRegen = 0.5f;
-    public float maxBlock = 200;
+    public float blockRegen = 0.7f;
+    public float maxBlock = 150;
 
     void Update(){
         if (dashCooldown > 0){
@@ -87,8 +89,13 @@ public class Player : MonoBehaviour, IDamagable{
             Attack();
         }
 
-
-        blocking = Input.GetMouseButton(1) && blockHealth > 0;
+        if (Input.GetMouseButton(1) && !prevblocking && blockHealth>30){
+            blocking = true;
+        }
+        else{
+            blocking = Input.GetMouseButton(1) && blockHealth > 0 && prevblocking;
+        }
+        
 
 
         float xv = 0;
@@ -133,14 +140,15 @@ public class Player : MonoBehaviour, IDamagable{
         am.SetBool("Grounded", m_Grounded);
 
         //block code
-        blockHealth += blocking ? -1 : 0;
-        if (!blocking && blockHealth < 200){
-            blockHealth += 0.9f;
+        blockHealth += blocking ? -0.7f : 0;
+        if (!blocking && blockHealth < maxBlock){
+            blockHealth += blockRegen;
         }
         blockHealth = Mathf.Clamp(blockHealth, 0, maxBlock); //clamp it so that ui doesnt bug out
         
         blockC.SetActive(blocking);
         am.SetBool("Blocking", blocking);
+        am.SetBool("WasBlocking", prevblocking);
         prevblocking = blocking;
 
         blockAMT.fillAmount = blockHealth / maxBlock;
@@ -205,6 +213,7 @@ public class Player : MonoBehaviour, IDamagable{
         }
         else{
             shields--;
+            shatter.Play();
         }
     }
 
@@ -244,6 +253,10 @@ public class Player : MonoBehaviour, IDamagable{
             if (Index == -3){ // -3 adds taser
                 taser = true;
                 extrastun += 0.5f;
+            }
+            if (Index == -4){
+                moveV += 100f;
+                jumpV += 100f;
             }
         }
     }

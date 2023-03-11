@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Blocking : MonoBehaviour,IDamagable{
-    private Player p;
+    public Player p;
 
 
     public void takeDamage(int dmg, Vector3 hitpoint, bool tazer, float stun, int owner){
-        p.blockHealth -= dmg;
+        dmg = (int)(dmg * 0.6f);
+        if (p.blockHealth > dmg){
+            p.blockHealth -= dmg;
+        }
+        else{
+            p.takeDamage(dmg,hitpoint,tazer,stun,owner);
+        }
     }
 }

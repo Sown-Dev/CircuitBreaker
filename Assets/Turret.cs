@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class Enemy1 : MonoBehaviour, IDamagable{
+public class Turret : MonoBehaviour, IDamagable{
     //Gradients
     public Gradient redCol;
     public Gradient shootingCol;
@@ -15,22 +15,19 @@ public class Enemy1 : MonoBehaviour, IDamagable{
     //Prefabs
     public GameObject bullet;
     public GameObject blood;
-    public GameObject gibs;
+    public GameObject scrapgibs;
     public Transform bulletSpawnPos;
-    public GameObject arms;
 
     //Health and Stats
     private float Health;
-    private float maxHealth = 100;
+    private float maxHealth = 200;
     [HideInInspector] StateEnum State;
-    private float xVel = 1600;
-    private float jumpV = 900;
+
     private float Itime = 0; //invincibilty time
 
     //Other Stuff
 
     private GameObject _player;
-    private Rigidbody2D rb;
     private bool aware; //whether or not the enemy is aware of the player.
     private Vector3 lastSeen;
     public Animator am;
@@ -49,38 +46,18 @@ public class Enemy1 : MonoBehaviour, IDamagable{
         Health = maxHealth;
         aware = false;
         _player = GameObject.FindGameObjectWithTag("Player");
-        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    [SerializeField] private Transform m_GroundCheck;
-    private bool m_Grounded;
-
-    [SerializeField] private Transform PitCheck;
+    
 
     void FixedUpdate(){
-        //ground check
-        bool wasGrounded = m_Grounded;
-        m_Grounded = false;
-
-        Collider2D[] colliders =
-            Physics2D.OverlapBoxAll(m_GroundCheck.position, new Vector2(0.48f, 0.056f), 0, level.value);
-
-        for (int i = 0; i < colliders.Length; i++){
-            if (colliders[i].gameObject != gameObject){
-                m_Grounded = true;
-                if (!wasGrounded){
-                    //landing sound
-                }
-            }
-        }
+       
 
         //Line Renderer lerp stuff:
         lr.SetPosition(1, Vector2.Lerp(lr.GetPosition(1), lrTopos, 10 * Time.deltaTime));
 
 
-        am.SetInteger("State", (int)State);
-        am.SetFloat("Speed", math.abs(rb.velocity.x));
-        am.SetBool("Falling", math.abs(rb.velocity.y) > 0.05f);
+        
 
 
         if (shootDelay > 0){
@@ -111,7 +88,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
     void Tick(){
         lr.enabled = false;
-        
+        //Have Raycast behind to detect player if they are there for long enough:
 
 
         //AI: start by raycasting:
@@ -129,12 +106,6 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
 
                 if (State != StateEnum.Shooting && visibility > 30 && State != StateEnum.ShootingDelay){
-                    if (_player.transform.position.x > transform.position.x){
-                        transform.localScale = new Vector3(1, 1, 1);
-                    }
-                    else{
-                        transform.localScale = new Vector3(-1, 1, 1);
-                    }
                     //can enter shooting from any state
                     shootDelay = 0.4f; //start with some delay so you don't instantly die
                     State = StateEnum.Shooting;
@@ -151,6 +122,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
         switch (State){
             case (StateEnum.ShootingDelay):{
+                
                 lr.colorGradient = shootingCol;
                 RaycastHit2D shothit = Physics2D.Raycast(transform.position,
                     (shootpos - transform.position).normalized, range, level.value);
@@ -165,9 +137,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                     lr.SetPosition(0, lr.transform.position);
                     lrTopos = (_player.transform.position - transform.position).normalized * range + transform.position;
                 }
-
-                arms.SetActive(true);
-                arms.transform.right = (shootpos - transform.position) * transform.localScale.x;
+                turretHead.transform.right = (shootpos - transform.position) * -transform.localScale.x;
                 if (shootWait <= 0){
                     State = StateEnum.Shooting;
                     am.SetTrigger("Shoot");
@@ -194,16 +164,14 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                     lrTopos = (_player.transform.position - transform.position).normalized * range + transform.position;
                 }
 
-                if (_player.transform.position.x > transform.position.x){
+                if (_player.transform.position.x < transform.position.x){
                     transform.localScale = new Vector3(1, 1, 1);
                 }
                 else{
                     transform.localScale = new Vector3(-1, 1, 1);
                 }
 
-
-                arms.SetActive(true);
-                arms.transform.right = (_player.transform.position - transform.position) * transform.localScale.x;
+                turretHead.transform.right = (_player.transform.position - transform.position) * -transform.localScale.x;
 
                 if (Itime <= 0 && shootDelay <= 0){
                     State = StateEnum.ShootingDelay;
@@ -220,7 +188,6 @@ public class Enemy1 : MonoBehaviour, IDamagable{
                 break;
             }
             case (StateEnum.Passive):{
-                arms.SetActive(false);
                 RaycastHit2D bcheck = Physics2D.Raycast(transform.position, transform.right * -transform.localScale.x,
                     6, player.value);
 
@@ -243,74 +210,17 @@ public class Enemy1 : MonoBehaviour, IDamagable{
             }
 
             case (StateEnum.Searching):{
-                arms.SetActive(false);
-                //gives position of player
-                if (!Physics2D.Linecast(transform.position + new Vector3(0, 0.4f, 0), _player.transform.position,
-                        level.value)){ //we rais the origin so that we cast from the head
-                    awarenesstime = 0;
-                    lastSeen = _player.transform.position;
-                }
-                else{
-                    awarenesstime++;
-                }
-
-                if (awarenesstime > 100){
-                    aware = false;
-                    State = StateEnum.Passive;
-                }
-
-                //makes enemy go towards player
-                if (Vector2.Distance(lastSeen, transform.position) > 2f){ //keep your distance
-                    //if we are far enough away keep searching, otherwise we go to passive
-                    if (lastSeen.x > transform.position.x){
-                        transform.localScale = new Vector3(1, 1, 1);
-                    }
-                    else{
-                        transform.localScale = new Vector3(-1, 1, 1);
-                    }
-
-                    rb.AddForce(transform.right * (xVel * Time.deltaTime * transform.localScale.x));
-                    //check for incline in front to jump over obstacles
-                    RaycastHit2D stairhit = Physics2D.Raycast(transform.position - new Vector3(0, 0.4f, 0),
-                        transform.right, 0.9f * transform.localScale.x, level.value);
-
-                    if (stairhit.collider != null){
-                        stairVal++;
-                        if (stairVal > 5 && m_Grounded){
-                            stairVal = 0;
-                            //jump!
-                            rb.AddForce(transform.up * jumpV);
-                        }
-                    }
-
-                    //check for pit below, in case u need to jump over
-                    RaycastHit2D pithit = Physics2D.BoxCast(PitCheck.position,
-                        new Vector2(0.1f, 0.1f), 0, transform.up, 0, level.value);
-
-                    if (pithit.collider == null){ //want to check if there is nothing below
-                        stairVal++;
-                        if (stairVal > 4 && m_Grounded){
-                            stairVal = 0;
-                            rb.AddForce(transform.up * jumpV * 1.3f); //higher jumps over pit
-                        }
-                    }
-                }
-                else{
-                    if (!aware)
-                        State = StateEnum.Passive;
-                }
-
-
+                State = StateEnum.Passive;
                 break;
             }
         }
     }
 
-    private int stairVal; // how long ive been looking at an incline
 
+    public Transform turretHead;
     void Shoot(){
-        GameObject bul = Instantiate(bullet, bulletSpawnPos.position, arms.transform.rotation);
-        bul.transform.right = arms.transform.right * transform.localScale.x;
+        GameObject bul = Instantiate(bullet, bulletSpawnPos.position, turretHead.rotation);
+        bul.transform.right = turretHead.transform.right * -transform.localScale.x;
     }
 
     private void OnDrawGizmos(){
@@ -379,7 +289,7 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
     void Die(){
         ScreenShake.camShake.Shake(0.2f, 0.2f);
-        Instantiate(gibs, transform.position, Quaternion.identity);
+        Instantiate(scrapgibs, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

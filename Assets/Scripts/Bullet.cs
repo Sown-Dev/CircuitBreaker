@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour{
+    public GameObject shrapnel;
     private int owner = 0; //0 = player, 1 enemey
     public Rigidbody2D rb;
     private void Start(){
@@ -14,12 +15,12 @@ public class Bullet : MonoBehaviour{
     }
 
     private void OnCollisionEnter2D(Collision2D col){
-        if (col.gameObject.GetComponent<IDamagable>() != null){ //damage is done regardless
-            col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0, 0);
-        }
         
-        Debug.Log(col.gameObject.layer);
+        
         if (col.gameObject.layer == 13){
+            if (col.gameObject.GetComponent<IDamagable>() != null){ //damage is done regardless
+                col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0, owner);
+            }
             
             transform.right = col.contacts[0].normal;
             rb.velocity = Vector2.zero;
@@ -27,7 +28,11 @@ public class Bullet : MonoBehaviour{
             owner = 0;
         }
         else{
+            if (col.gameObject.GetComponent<IDamagable>() != null){ 
+                col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0, owner);
+            }
 
+            Instantiate(shrapnel, transform.position, Quaternion.Euler(col.contacts[0].normal));
             Destroy(gameObject);
             
         }
