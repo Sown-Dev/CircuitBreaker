@@ -279,13 +279,13 @@ public class Enemy1 : MonoBehaviour, IDamagable{
 
                     //check for pit below, in case u need to jump over
                     RaycastHit2D pithit = Physics2D.BoxCast(PitCheck.position,
-                        new Vector2(0.1f,0.1f), 0, transform.up, 0, level.value);
+                        new Vector2(0.1f, 0.1f), 0, transform.up, 0, level.value);
 
                     if (pithit.collider == null){ //want to check if there is nothing below
                         stairVal++;
                         if (stairVal > 4 && m_Grounded){
                             stairVal = 0;
-                            rb.AddForce(transform.up * jumpV*1.3f); //higher jumps over pit
+                            rb.AddForce(transform.up * jumpV * 1.3f); //higher jumps over pit
                         }
                     }
                 }
@@ -337,16 +337,19 @@ public class Enemy1 : MonoBehaviour, IDamagable{
         ShootingDelay = 4
     };
 
-    public void takeDamage(int dmg, Vector3 hit){
+    public void takeDamage(int dmg, Vector3 hit, bool tazer, float stun, int owner){
         //If marked, double damage
         dmg *= marked ? 2 : 1;
 
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
-            Itime = 0.2f;
-            am.SetTrigger("Hit");
-            aware = true;
-            State = StateEnum.Searching;
+            if (owner == 0){
+                Itime = 0.15f;
+                am.SetTrigger("Hit");
+                aware = true;
+                State = StateEnum.Searching;
+            }
+
             shootDelay = 1f;
             if (Health > dmg){
                 TimeMan.tm.TimeFreeze(0.11f);
