@@ -50,6 +50,7 @@ MonoBehaviour:
   Nodes: []
   myObj: {fileID: 117913488393641425}
   myRot: 0
+  bc: {fileID: 7199930820587988136}
 --- !u!61 &7199930820587988136
 BoxCollider2D:
   m_ObjectHideFlags: 0

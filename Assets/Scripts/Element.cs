@@ -8,8 +8,10 @@ public class Element : MonoBehaviour{
     public List<Node> Nodes;
     public GameObject myObj;
     public Node.NodeEnum myRot;
+
+    public BoxCollider2D bc;
     
-    private void OnTriggerEnter2D(Collider2D other){
-        Destroy(gameObject);
+    private void Awake(){
+        
     }
 }

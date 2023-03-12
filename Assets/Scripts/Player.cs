@@ -45,7 +45,7 @@ public class Player : MonoBehaviour, IDamagable{
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    private float jumpV = 1190;
+    private float jumpV = 1230;
     private float moveV = 1000;
 
     private bool m_Grounded;
@@ -77,8 +77,8 @@ public class Player : MonoBehaviour, IDamagable{
     bool prevblocking;
     public float blockHealth;
     //blocking params:
-    public float blockRegen = 0.7f;
-    public float maxBlock = 150;
+    public float blockRegen = 0.8f;
+    public float maxBlock = 200;
 
     void Update(){
         if (dashCooldown > 0){
@@ -142,7 +142,7 @@ public class Player : MonoBehaviour, IDamagable{
         am.SetBool("Grounded", m_Grounded);
 
         //block code
-        blockHealth += blocking ? -0.7f : 0;
+        blockHealth += blocking ? -0.6f : 0;
         if (!blocking && blockHealth < maxBlock){
             blockHealth += blockRegen;
         }
@@ -201,9 +201,9 @@ public class Player : MonoBehaviour, IDamagable{
     }
 
     IEnumerator AttackCR(){
-        yield return new WaitForSeconds(0.02f);
+        yield return new WaitForSeconds(0.03f);
         attackAC.SetActive(true);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.8f);
         attackAC.SetActive(false);
         am.SetBool("Dash", false);
     }
@@ -254,11 +254,15 @@ public class Player : MonoBehaviour, IDamagable{
 
             if (Index == -3){ // -3 adds taser
                 taser = true;
-                extrastun += 0.5f;
+                extrastun += 1.2f;
             }
             if (Index == -4){
-                moveV += 120f;
-                jumpV += 100f;
+                moveV += 210f;
+                jumpV += 150f;
+            }
+            if (Index == -5){
+                blockRegen += 1f;
+                maxBlock += 50f;
             }
         }
     }

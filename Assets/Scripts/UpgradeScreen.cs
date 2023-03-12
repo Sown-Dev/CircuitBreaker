@@ -17,7 +17,7 @@ public class UpgradeScreen : MonoBehaviour{
     private void Awake(){
         cg.alpha = 0;
         p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        GetUpgrade();
+        //GetUpgrade();
     }
 
     private void Update(){

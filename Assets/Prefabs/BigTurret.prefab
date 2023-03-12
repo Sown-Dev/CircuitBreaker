@@ -333,7 +333,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   bullet: {fileID: 6216050820984621176, guid: b7e5f0577e88137429ba21b994fdbc8f, type: 3}
   blood: {fileID: 2153490456721705848, guid: ad884b68ab473b246b698f6a27e520b7, type: 3}
-  scrapgibs: {fileID: 6178445937370703752, guid: 455337dc141574b428f195f2541badc3, type: 3}
+  scrapgibs: {fileID: 6178445937370703752, guid: 4a70d9e35766a88498831a06bf9111a2, type: 3}
   bulletSpawnPos: {fileID: 6991267330258147080}
   maxHealth: 250
   am: {fileID: 6991267328432762756}

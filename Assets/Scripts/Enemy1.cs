@@ -348,13 +348,13 @@ public class Enemy1 : EnemyClass, IDamagable{
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
             if (owner == 0){
-                Itime = 0.15f;
+                Itime = 0.09f;
                 am.SetTrigger("Hit");
                 aware = true;
                 State = StateEnum.Searching;
             }
 
-            shootDelay = 1f;
+            shootDelay +=1f;
             if (Health > dmg){
                 TimeMan.tm.TimeFreeze(0.11f);
                 Health -= dmg;

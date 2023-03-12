@@ -147,9 +147,8 @@ public class Turret : EnemyClass, IDamagable{
                         shootWait = shotWaitMax;
                     }
                     burst++;
-
+                    shootDelay = 2f;
                     if (burst >= maxBurst+5){ //add 5 frames to not instantly transition
-                        shootDelay = 2f;
                         State = StateEnum.Shooting;
                     }
                 }
@@ -174,10 +173,10 @@ public class Turret : EnemyClass, IDamagable{
                 }
 
                 if (_player.transform.position.x < transform.position.x){
-                    transform.localScale = new Vector3(1, 1, 1);
+                    transform.localScale = new Vector3(1, transform.localScale.y, 1);
                 }
                 else{
-                    transform.localScale = new Vector3(-1, 1, 1);
+                    transform.localScale = new Vector3(-1,  transform.localScale.y, 1);
                 }
 
                 turretHead.transform.right = (_player.transform.position - transform.position) * -transform.localScale.x;
@@ -270,13 +269,13 @@ public class Turret : EnemyClass, IDamagable{
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
             if (owner == 0){
-                Itime = 0.15f;
+                Itime = 0.1f;
                 am.SetTrigger("Hit");
                 aware = true;
                 State = StateEnum.Searching;
             }
 
-            shootDelay = 1f;
+            shootDelay += 1f;
             if (Health > dmg){
                 TimeMan.tm.TimeFreeze(0.11f);
                 Health -= dmg;
