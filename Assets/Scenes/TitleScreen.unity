@@ -380,7 +380,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 262}
-  m_SizeDelta: {x: 800, y: 220}
+  m_SizeDelta: {x: 1400, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1102005479
 MonoBehaviour:
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Title
+  m_text: Circuit Breaker
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d122db7de2da9b84ca60645e538fbd14, type: 2}
   m_sharedMaterial: {fileID: 7428959106058010230, guid: d122db7de2da9b84ca60645e538fbd14, type: 2}

@@ -7,7 +7,7 @@ public class Blocking : MonoBehaviour,IDamagable{
 
 
     public void takeDamage(int dmg, Vector3 hitpoint, bool tazer, float stun, int owner){
-        dmg = (int)(dmg * 0.6f);
+        dmg = (int)(dmg * 0.4f);
         if (p.blockHealth > dmg){
             p.blockHealth -= dmg;
         }
