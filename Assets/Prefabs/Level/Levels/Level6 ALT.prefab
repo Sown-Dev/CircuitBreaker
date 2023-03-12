@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 5743714335389898309}
   - component: {fileID: 7199930820587988136}
   m_Layer: 6
-  m_Name: Level6
+  m_Name: Level6 ALT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3094,7 +3094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5633768253937672905, guid: 0c043810b96cf364382258e2a7d7202a, type: 3}
       propertyPath: roomtype
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5633768253937672905, guid: 0c043810b96cf364382258e2a7d7202a, type: 3}
       propertyPath: isDeadEnd
@@ -3191,7 +3191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5633768253937672905, guid: 0c043810b96cf364382258e2a7d7202a, type: 3}
       propertyPath: roomtype
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5633768253937672905, guid: 0c043810b96cf364382258e2a7d7202a, type: 3}
       propertyPath: isDeadEnd
