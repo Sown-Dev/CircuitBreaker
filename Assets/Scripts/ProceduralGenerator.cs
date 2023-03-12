@@ -12,7 +12,9 @@ public class ProceduralGenerator : MonoBehaviour{
     public List<GameObject> Transitions;
     public GameObject end;
     public List<Node> Nodes;
-
+    
+    public GameObject upToR;
+    
     public int genAmt;
 
     public LayerMask levels;
@@ -20,8 +22,7 @@ public class ProceduralGenerator : MonoBehaviour{
         Generate();
     }
 
-    private Element e2;
-    private Node n2;
+    
     private bool hasEnd; // if end room has been generated yet
     void Generate(){
         
@@ -36,9 +37,7 @@ public class ProceduralGenerator : MonoBehaviour{
                     GameObject GO = GetRandomElement(rt, rot);//Instantiate(GetRandomElement(rt,rot), n.transform.position, n.transform.rotation);
                     Element e = GO.GetComponent<Element>();
                     
-                    //DELETE leater
-                    n2 = n;
-                    e2 = e;
+                   
 
                     //boxcast to check for overlap:
                     Vector3 castPos = n.transform.position + (Vector3) e.bc.offset;
@@ -101,6 +100,13 @@ public class ProceduralGenerator : MonoBehaviour{
                 if (n.nodeRot == Node.NodeEnum.Right && !hasEnd){
                     hasEnd = true;
                     Instantiate(end, n.transform.position, n.transform.rotation);
+                }else if (n.nodeRot == Node.NodeEnum.Up && !hasEnd){
+                    GameObject GO=Instantiate(upToR, n.transform.position, n.transform.rotation);
+                    Element e = GO.GetComponent<Element>();
+                    Node n2 = e.Nodes[0];
+                    n2.Open = false;
+                    hasEnd = true;
+                    Instantiate(end, n2.transform.position, n2.transform.rotation);
                 }
                 else{
                     GameObject GO = Instantiate(GetRandomElement(Node.RoomType.DeadEnd, n.nodeRot),
@@ -108,11 +114,6 @@ public class ProceduralGenerator : MonoBehaviour{
                 }
             }
         }
-    }
-
-    private void OnDrawGizmos(){
-        if(n2)
-            Gizmos.DrawCube( n2.transform.position + (Vector3) e2.bc.offset, e2.bc.size);
     }
 
     GameObject GetRandomElement(Node.RoomType rt, Node.NodeEnum rot){

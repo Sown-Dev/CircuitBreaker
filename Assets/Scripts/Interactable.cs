@@ -2,7 +2,7 @@
 
 public class Interactable : MonoBehaviour{
     [HideInInspector]public GameObject player;
-    [HideInInspector]public FadeIn eKey;
+    public FadeIn eKey;
     [HideInInspector]public Material m;
     [HideInInspector]public float toTh;
     [HideInInspector]public bool interactable = true;
@@ -23,7 +23,7 @@ public class Interactable : MonoBehaviour{
             if (Vector2.Distance(player.transform.position, transform.position) < 2.5f){
                 //show E
                 eKey.enable();
-                toTh = 0.01f;
+                toTh = 0.005f;
 
                 if (Input.GetKeyDown("e")){
                     Interact();

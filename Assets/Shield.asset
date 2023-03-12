@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Energy Shield
   icon: {fileID: 21300000, guid: 2fa75ec7315c721449e0997dae45f6de, type: 3}
-  description: 'Protects from the next hit. '
+  description: Absorbs damage. Grants 2 energy shields
   ID: -1

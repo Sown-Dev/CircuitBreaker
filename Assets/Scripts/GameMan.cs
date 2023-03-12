@@ -39,7 +39,7 @@ public class GameMan : MonoBehaviour{
     }
 
     public void Restart(){
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
 

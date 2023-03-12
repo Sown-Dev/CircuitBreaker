@@ -35,7 +35,7 @@ public class Player : MonoBehaviour, IDamagable{
 
     public Image blockAMT;    
     
-    private int maxJumps;
+    private int maxJumps=1;
 
     public ParticleSystem shatter;
 
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour, IDamagable{
     private float moveV = 1000;
 
     private bool m_Grounded;
-
+    public int jumpType = 0; //0 normal jump, 1 = dash
     
 
     private void FixedUpdate(){
@@ -79,7 +79,8 @@ public class Player : MonoBehaviour, IDamagable{
     //blocking params:
     public float blockRegen = 0.8f;
     public float maxBlock = 200;
-
+    
+    
     void Update(){
         if (dashCooldown > 0){
             dashCooldown -= Time.deltaTime;
@@ -120,7 +121,14 @@ public class Player : MonoBehaviour, IDamagable{
 
         if ((Input.GetKeyDown(KeyCode.W)) && !m_Grounded && jumpCache > 0){
             jumpCache--;
-            VerticalDash();
+            if (jumpType == 1){
+                VerticalDash();
+            }
+            else if (jumpType == 0){
+                yv += 0.6f; //slightly weaker double jump
+                Instantiate(dust, transform.position, Quaternion.identity);
+                am.SetTrigger("Jump");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && !am.GetBool("Dash") && dashCooldown <= 0){
@@ -245,7 +253,7 @@ public class Player : MonoBehaviour, IDamagable{
 
         else{
             if (Index == -1){ //-1 adds shield
-                shields++;
+                shields+=2;
             }
 
             if (Index == -2){ //-2 adds jump
@@ -263,6 +271,9 @@ public class Player : MonoBehaviour, IDamagable{
             if (Index == -5){
                 blockRegen += 1f;
                 maxBlock += 50f;
+            }
+            if (Index == -6){
+                jumpType = 1;
             }
         }
     }

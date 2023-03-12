@@ -13,12 +13,10 @@ public class Node : MonoBehaviour{
     private void Awake(){
         Open = true;
         sr = gameObject.GetComponent<SpriteRenderer>();
+        sr.color = new Color(0, 0, 0, 0);
     }
 
-    private void Update(){
-
-        sr.color = Open ? Color.red : Color.black;
-    }
+    
     
     public enum NodeEnum{
         Right =0,
