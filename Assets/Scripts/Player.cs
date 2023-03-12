@@ -138,7 +138,7 @@ public class Player : MonoBehaviour, IDamagable{
             transform.localScale = new Vector3(rb.velocity.x < 0 ? -1 : 1, 1, 1);
 
 
-        am.SetBool("Falling", math.abs(rb.velocity.y) > 0.1f);
+        am.SetBool("Falling", math.abs(rb.velocity.y) > 1f);
         am.SetBool("Grounded", m_Grounded);
 
         //block code

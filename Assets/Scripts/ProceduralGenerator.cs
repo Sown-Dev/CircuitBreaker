@@ -22,7 +22,7 @@ public class ProceduralGenerator : MonoBehaviour{
 
     private Element e2;
     private Node n2;
-    
+    private bool hasEnd; // if end room has been generated yet
     void Generate(){
         
         int generated = 0;
@@ -58,7 +58,7 @@ public class ProceduralGenerator : MonoBehaviour{
                         if (attempts > 100){
                             if (rt == Node.RoomType.Level){
                                 rt = Node.RoomType.Transition;
-                                while (hit.collider] != null ){
+                                while (hit.collider != null ){
                                     Debug.Log("attempt" + attempts);
                                     GO = GetRandomElement(rt, rot);//Instantiate(GetRandomElement(rt,rot), n.transform.position, n.transform.rotation);
                                     e = GO.GetComponent<Element>();
@@ -97,8 +97,15 @@ public class ProceduralGenerator : MonoBehaviour{
 
         foreach (Node n in Nodes){
             if (n.Open){
-                GameObject GO = Instantiate(end, n.transform.position, n.transform.rotation);
-                break;
+                n.Open = false;
+                if (n.nodeRot == Node.NodeEnum.Right && !hasEnd){
+                    hasEnd = true;
+                    Instantiate(end, n.transform.position, n.transform.rotation);
+                }
+                else{
+                    GameObject GO = Instantiate(GetRandomElement(Node.RoomType.DeadEnd, n.nodeRot),
+                        n.transform.position, n.transform.rotation);
+                }
             }
         }
     }
@@ -137,7 +144,7 @@ public class ProceduralGenerator : MonoBehaviour{
 
     bool OpenNodes(){
         foreach (Node n in Nodes){
-            if (n.Open){
+             if (n.Open){
                 return true;
             }
         }
