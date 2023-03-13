@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IDamagable{
     public GameObject swordParticles;
 
     public ItemMan[] itemMans;
-    [HideInInspector] public int shields;
+    [HideInInspector] public int shields=1;
 
     public int damage = 40;
     public bool platforms;
