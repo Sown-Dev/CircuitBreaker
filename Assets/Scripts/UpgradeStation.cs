@@ -9,7 +9,9 @@ public class UpgradeStation : Interactable{
 
     public Animator am;
 
+    public AudioSource src;
     public override void Interact(){
+        src.Play();
         used = true;
         interactable = false;
         us.GetUpgrade();
