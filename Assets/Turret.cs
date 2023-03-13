@@ -37,7 +37,11 @@ public class Turret : EnemyClass, IDamagable{
     float shootDelay;
     public LineRenderer lr;
 
-
+    //Audio
+    public AudioSource src;
+    public AudioClip hit;
+    public AudioClip shoot;
+    public AudioClip lockon;
 
     private void Awake(){
         marker.SetActive(false);
@@ -228,6 +232,7 @@ public class Turret : EnemyClass, IDamagable{
 
     public Transform turretHead;
     void Shoot(){
+        src.PlayOneShot(shoot,0.8f);
         GameObject bul = Instantiate(bullet, bulletSpawnPos.position, turretHead.rotation);
         bul.transform.right = turretHead.transform.right * -transform.localScale.x;
     }
@@ -268,13 +273,21 @@ public class Turret : EnemyClass, IDamagable{
 
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
+            am.SetTrigger("Hit");
             if (owner == 0){
-                Itime = 0.1f;
-                am.SetTrigger("Hit");
+                Itime = 0.09f;
+                
+                aware = true;
+                State = StateEnum.Searching;
+                
+            }
+            if (owner == -1){
+                Itime = 0.09f;
+                
                 aware = true;
                 State = StateEnum.Searching;
             }
-
+            src.PlayOneShot(this.hit, 0.3f);
             shootDelay += 1f;
             if (Health > dmg){
                 TimeMan.tm.TimeFreeze(0.11f);

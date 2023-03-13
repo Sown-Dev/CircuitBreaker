@@ -11,6 +11,10 @@ public class TimeMan : MonoBehaviour{
         tm = this;
     }
 
+    private void Update(){
+        
+    }
+
     public void TimeFreeze(float dur){
         StartCoroutine(TFHelper(dur,0.17f));
     }

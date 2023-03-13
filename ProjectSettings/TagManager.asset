@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DeathScreen
   - UpgradeScreen
+  - WinScreen
   layers:
   - Default
   - TransparentFX

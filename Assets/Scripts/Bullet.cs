@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour{
             transform.right = col.contacts[0].normal;
             rb.velocity = Vector2.zero;
             rb.AddForce(transform.right * 180 );
-            owner = 0;
+            owner = -1;
         }
         else{
             if (col.gameObject.GetComponent<IDamagable>() != null){ 

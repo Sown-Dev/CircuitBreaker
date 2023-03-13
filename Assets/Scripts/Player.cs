@@ -40,6 +40,12 @@ public class Player : MonoBehaviour, IDamagable{
 
     public ParticleSystem shatter;
 
+    //audio:
+    public AudioSource src;
+    public AudioClip electricsword;
+    public AudioClip runtiles;
+    public AudioClip runactuator;
+    public AudioClip discharge;
     void Awake(){
         taserOBJ.SetActive(false);
         dashAC.SetActive(false);
@@ -85,7 +91,24 @@ public class Player : MonoBehaviour, IDamagable{
     public float maxBlock = 210;
 
     public Vector3 mouseDir;
+    
+    //audio stuff:
+    private Vector3 startPos; //picks new pos every 3 seconds, moving from this position will produce footsteps
+    private float elapsed;
     void Update(){
+        if (m_Grounded){
+            elapsed += Time.deltaTime;
+            if (elapsed > 2f){
+                elapsed = 0;
+                startPos = transform.position;
+            }
+
+            if (Vector2.Distance(startPos, transform.position) > 1.1f){
+                startPos = transform.position;
+                src.PlayOneShot(runtiles, 0.7f);
+            }
+        }
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         mouseDir = (mousePos - transform.position).normalized;
@@ -96,9 +119,9 @@ public class Player : MonoBehaviour, IDamagable{
             dashCooldown -= Time.deltaTime;
         }
 
-        if (Input.GetMouseButtonDown(0)){
-            Attack();
-        }
+        //if (Input.GetMouseButtonDown(0)){
+            //Attack();
+        //}
 
         if (Input.GetMouseButtonDown(1) && !prevblocking && blockHealth > 30){
             blocking = true;
@@ -141,7 +164,7 @@ public class Player : MonoBehaviour, IDamagable{
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !am.GetBool("Dash") && dashCooldown <= 0){
+        if (Input.GetMouseButtonDown(0) && !am.GetBool("Dash") && dashCooldown <= 0){
             
             Dash(mouseDir);
         }
@@ -192,18 +215,21 @@ public class Player : MonoBehaviour, IDamagable{
 
     public ArmsHolder ah;
     void Dash(Vector3 direction){
-        rb.velocity *= 0.2f;
-        dashCooldown += 0.9f;
+        src.PlayOneShot(electricsword,0.06f);
+        rb.velocity *= 0.16f;
+        dashCooldown += 0.6f;
         am.SetBool("Dash", true);
         armam.SetBool("Dash", true);
         armam.SetTrigger("DashT");
-        rb.AddForce(direction * (1.4f * moveV) );
+        rb.AddForce(direction * (1.1f * moveV) );
         StartCoroutine(DashCR());
     }
 
+    
     void VerticalDash(){
+        src.PlayOneShot(electricsword,0.06f);
         rb.velocity *= 0.1f; // reset force
-        rb.AddForce(transform.up * (1.2f * jumpV));
+        rb.AddForce(transform.up * (1.1f * jumpV));
         am.SetTrigger("UpDash");
     }
 

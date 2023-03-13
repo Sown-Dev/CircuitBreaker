@@ -21,7 +21,7 @@ public class Enemy1 : EnemyClass, IDamagable{
 
     //Health and Stats
     private float Health;
-    private float maxHealth = 100;
+    private float maxHealth = 160;
     [HideInInspector] StateEnum State;
     private float xVel = 1600;
     private float jumpV = 900;
@@ -55,6 +55,15 @@ public class Enemy1 : EnemyClass, IDamagable{
 
     [SerializeField] private Transform PitCheck;
 
+    
+    //AUDIO STUFF:
+    public AudioSource src;
+    public AudioClip hit1;
+    public AudioClip hit2;
+    public AudioClip shootsfx;
+    public AudioClip walk;
+    
+    
     void FixedUpdate(){
         //ground check
         bool wasGrounded = m_Grounded;
@@ -307,6 +316,7 @@ public class Enemy1 : EnemyClass, IDamagable{
     private int stairVal; // how long ive been looking at an incline
 
     void Shoot(){
+        src.PlayOneShot(shootsfx,0.8f);
         GameObject bul = Instantiate(bullet, bulletSpawnPos.position, arms.transform.rotation);
         bul.transform.right = arms.transform.right * transform.localScale.x;
     }
@@ -347,11 +357,23 @@ public class Enemy1 : EnemyClass, IDamagable{
 
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
+            am.SetTrigger("Hit");
             if (owner == 0){
                 Itime = 0.09f;
-                am.SetTrigger("Hit");
+                
                 aware = true;
                 State = StateEnum.Searching;
+                src.PlayOneShot(hit1, 0.8f);
+            }
+            if (owner == -1){
+                Itime = 0.09f;
+                
+                aware = true;
+                State = StateEnum.Searching;
+                src.PlayOneShot(hit2, 0.8f);
+            }
+            else{
+                src.PlayOneShot(hit2, 0.8f);
             }
 
             shootDelay +=1f;

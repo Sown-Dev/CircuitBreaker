@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +41,16 @@ public class GameMan : MonoBehaviour{
 
     public void Restart(){
         SceneManager.LoadScene(1);
+    }
+
+    public void Win(){
+        FadeToBlack.fb.toA = 1;
+        StartCoroutine(ReturnToMenu());
+    }
+
+    IEnumerator ReturnToMenu(){
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(0);
     }
 
 
