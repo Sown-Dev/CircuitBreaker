@@ -20,8 +20,7 @@ public class Enemy1 : EnemyClass, IDamagable{
     public GameObject arms;
 
     //Health and Stats
-    private float Health;
-    private float maxHealth = 160;
+    
     [HideInInspector] StateEnum State;
     private float xVel = 1600;
     private float jumpV = 900;
@@ -250,7 +249,6 @@ public class Enemy1 : EnemyClass, IDamagable{
                 break;
             }
             case(StateEnum.Stunned):{
-                Debug.Log("stunned! and tested "+tased);
                 stunTime -= Time.deltaTime;
                 if (stunTime <= 0){
                     tased = false;
