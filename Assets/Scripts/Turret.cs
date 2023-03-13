@@ -19,8 +19,7 @@ public class Turret : EnemyClass, IDamagable{
     public Transform bulletSpawnPos;
 
     //Health and Stats
-    private float Health;
-    public float maxHealth = 200;
+    
     [HideInInspector] StateEnum State;
 
     private float Itime = 0; //invincibilty time

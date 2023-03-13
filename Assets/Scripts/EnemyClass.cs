@@ -8,8 +8,8 @@ public class EnemyClass : MonoBehaviour{
     
     public Image hpbar;
     
-    public float Health;
-   public  float maxHealth = 160;
+    public float Health=0;
+    public  float maxHealth = 160;
     
     public bool marked;
     public void mark(){
