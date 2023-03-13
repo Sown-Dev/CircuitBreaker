@@ -13,7 +13,7 @@ public class AttackCollider : MonoBehaviour{
             }
 
             col.gameObject.GetComponent<IDamagable>().takeDamage(pl.damage, col.ClosestPoint(transform.position),
-                pl.taser, pl.extrastun, 0);
+                pl.taser, pl.extrastun+0.3f, 0);
         }
     }
 }

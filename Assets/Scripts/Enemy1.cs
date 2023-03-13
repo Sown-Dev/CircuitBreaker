@@ -42,6 +42,7 @@ public class Enemy1 : EnemyClass, IDamagable{
 
 
     private void Awake(){
+        taserFX.SetActive(false);
         marker.SetActive(false);
         State = StateEnum.Passive;
         Health = maxHealth;
@@ -118,7 +119,7 @@ public class Enemy1 : EnemyClass, IDamagable{
 
     void Tick(){
         lr.enabled = false;
-        
+        taserFX.SetActive(tased && State== StateEnum.Stunned);
 
 
         //AI: start by raycasting:
@@ -126,7 +127,7 @@ public class Enemy1 : EnemyClass, IDamagable{
         RaycastHit2D hit = Physics2D.Raycast(transform.position,
             (_player.transform.position - transform.position).normalized, range, both.value);
 
-        if (hit.collider != null){
+        if (hit.collider != null && State !=StateEnum.Stunned){
             if (((1 << hit.collider.gameObject.layer) & player.value) != 0){
                 if (visibility < 40){
                     visibility++;
@@ -248,6 +249,15 @@ public class Enemy1 : EnemyClass, IDamagable{
 
                 break;
             }
+            case(StateEnum.Stunned):{
+                Debug.Log("stunned! and tested "+tased);
+                stunTime -= Time.deltaTime;
+                if (stunTime <= 0){
+                    tased = false;
+                    State = StateEnum.Searching;
+                }
+                break;
+            }
 
             case (StateEnum.Searching):{
                 arms.SetActive(false);
@@ -310,9 +320,13 @@ public class Enemy1 : EnemyClass, IDamagable{
 
                 break;
             }
+            
         }
     }
 
+    public GameObject taserFX;
+
+    private float stunTime = 0;
     private int stairVal; // how long ive been looking at an incline
 
     void Shoot(){
@@ -348,28 +362,30 @@ public class Enemy1 : EnemyClass, IDamagable{
         Passive = 1,
         Searching = 2,
         Shooting = 3,
-        ShootingDelay = 4
+        ShootingDelay = 4,
+        Stunned= 5
     };
 
+    private bool tased = false;
     public void takeDamage(int dmg, Vector3 hit, bool tazer, float stun, int owner){
         //If marked, double damage
+        tased = tazer;
         dmg *= marked ? 2 : 1;
-
+        State = StateEnum.Stunned;
+        stunTime = stun+0.05f;
         Instantiate(blood, hit, Quaternion.identity);
         if (Itime <= 0){
             am.SetTrigger("Hit");
             if (owner == 0){
-                Itime = 0.09f;
+                Itime = 0.06f;
                 
                 aware = true;
-                State = StateEnum.Searching;
                 src.PlayOneShot(hit1, 0.8f);
             }
             if (owner == -1){
-                Itime = 0.09f;
+                Itime = 0.06f;
                 
                 aware = true;
-                State = StateEnum.Searching;
                 src.PlayOneShot(hit2, 0.8f);
             }
             else{
@@ -386,6 +402,7 @@ public class Enemy1 : EnemyClass, IDamagable{
                 Health = 0;
                 Die();
             }
+            State = StateEnum.Stunned;
         }
     }
 

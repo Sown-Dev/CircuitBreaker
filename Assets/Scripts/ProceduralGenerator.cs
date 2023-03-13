@@ -46,7 +46,7 @@ public class ProceduralGenerator : MonoBehaviour{
 
                     int attempts = 0;
                     while (hit.collider != null ){
-                        Debug.Log("attempt" + attempts);
+                        
                         GO = GetRandomElement(rt, rot);//Instantiate(GetRandomElement(rt,rot), n.transform.position, n.transform.rotation);
                         e = GO.GetComponent<Element>();
                         //boxcast to check for overlap:
@@ -58,7 +58,6 @@ public class ProceduralGenerator : MonoBehaviour{
                             if (rt == Node.RoomType.Level){
                                 rt = Node.RoomType.Transition;
                                 while (hit.collider != null ){
-                                    Debug.Log("attempt" + attempts);
                                     GO = GetRandomElement(rt, rot);//Instantiate(GetRandomElement(rt,rot), n.transform.position, n.transform.rotation);
                                     e = GO.GetComponent<Element>();
                                     //boxcast to check for overlap:
@@ -66,7 +65,7 @@ public class ProceduralGenerator : MonoBehaviour{
                                     hit = Physics2D.BoxCast(castPos,
                                         e.bc.size, 0, transform.up, 0 , levels);
                                     attempts++;
-                                    if (attempts > 100){
+                                    if (attempts > 200){
                                         break;
                                     }
                                 }

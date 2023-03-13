@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour{
         
         if (col.gameObject.layer == 13){
             if (col.gameObject.GetComponent<IDamagable>() != null){ //damage is done regardless
-                col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0, owner);
+                col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0.3f, owner);
             }
             
             transform.right = col.contacts[0].normal;
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour{
         }
         else{
             if (col.gameObject.GetComponent<IDamagable>() != null){ 
-                col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0, owner);
+                col.gameObject.GetComponent<IDamagable>().takeDamage(50, transform.position, false, 0.3f, owner);
             }
 
             Instantiate(shrapnel, transform.position, Quaternion.Euler(col.contacts[0].normal));

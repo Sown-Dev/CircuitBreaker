@@ -61,6 +61,7 @@ public class Player : MonoBehaviour, IDamagable{
 
 
     private void FixedUpdate(){
+        
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
 
@@ -314,12 +315,12 @@ public class Player : MonoBehaviour, IDamagable{
             if (Index == -3){ // -3 adds taser
                 taser = true;
                 taserOBJ.SetActive(true);
-                extrastun += 1.2f;
+                extrastun += 0.4f;
             }
 
             if (Index == -4){
-                moveV += 210f;
-                jumpV += 150f;
+                moveV += 170f;
+                jumpV += 140f;
             }
 
             if (Index == -5){
@@ -335,4 +336,5 @@ public class Player : MonoBehaviour, IDamagable{
 
     public bool taser;
     public float extrastun;
+    //base stun is in the AC class
 }
