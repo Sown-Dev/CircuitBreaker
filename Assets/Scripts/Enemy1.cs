@@ -7,35 +7,24 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class Enemy1 : EnemyClass, IDamagable{
+public class Enemy1 : EnemyClass{
     //Gradients
     public Gradient redCol;
     public Gradient shootingCol;
 
     //Prefabs
     public GameObject bullet;
-    public GameObject blood;
-    public GameObject gibs;
     public Transform bulletSpawnPos;
     public GameObject arms;
 
-    //Health and Stats
+
     
     [HideInInspector] StateEnum State;
     private float xVel = 1600;
     private float jumpV = 900;
     private float Itime = 0; //invincibilty time
 
-    //Other Stuff
 
-    private GameObject _player;
-    private Rigidbody2D rb;
-    private bool aware; //whether or not the enemy is aware of the player.
-    private Vector3 lastSeen;
-    public Animator am;
-    public LayerMask player;
-    public LayerMask level;
-    public LayerMask both;
     float shootDelay;
     public LineRenderer lr;
 
@@ -57,9 +46,6 @@ public class Enemy1 : EnemyClass, IDamagable{
 
     
     //AUDIO STUFF:
-    public AudioSource src;
-    public AudioClip hit1;
-    public AudioClip hit2;
     public AudioClip shootsfx;
     public AudioClip walk;
     
@@ -104,7 +90,6 @@ public class Enemy1 : EnemyClass, IDamagable{
             Itime -= Time.deltaTime;
         }
 
-        Tick();
     }
 
     private int visibility; //how many frames it has seen player. if above threshold, it shoots
@@ -319,9 +304,7 @@ public class Enemy1 : EnemyClass, IDamagable{
         }
     }
 
-    public GameObject taserFX;
-
-    private float stunTime = 0;
+  
     private int stairVal; // how long ive been looking at an incline
 
     void Shoot(){
@@ -331,83 +314,12 @@ public class Enemy1 : EnemyClass, IDamagable{
         bul.transform.right = arms.transform.right * transform.localScale.x;
     }
 
-    private void OnDrawGizmos(){
-        Gizmos.color = Color.blue;
-        //Gizmos.DrawLine(transform.position, transform.position + ((_player.transform.position-transform.position).normalized * 10));
-        Gizmos.DrawLine(transform.position - new Vector3(0, 0.4f, 0),
-            transform.position - new Vector3(0, 0.4f, 0) + ((transform.right * transform.localScale.x) * 0.8f));
+   
 
-        Gizmos.DrawLine(transform.position, transform.position + ((transform.right * -transform.localScale.x) * 6f));
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right * transform.localScale.x, 10,
-            player.value);
-
-        if (hit.collider != null){
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, hit.collider.gameObject.transform.position);
-        }
-
-        if (State == StateEnum.Searching){
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position + new Vector3(0, 0.4f, 0), lastSeen);
-        }
-        //Handles.Label(transform.position+ new Vector3(0, 1, 0), State.ToString());
-    }
-
-    enum StateEnum{
-        Passive = 1,
-        Searching = 2,
-        Shooting = 3,
-        ShootingDelay = 4,
-        Stunned= 5
-    };
-
-    private bool tased = false;
-    public void takeDamage(int dmg, Vector3 hit, bool tazer, float stun, int owner){
-        //If marked, double damage
-        tased = tazer;
-        dmg *= marked ? 2 : 1;
-        State = StateEnum.Stunned;
-        stunTime = stun+0.05f;
-        Instantiate(blood, hit, Quaternion.identity);
-        if (Itime <= 0){
-            am.SetTrigger("Hit");
-            if (owner == 0){
-                Itime = 0.06f;
-                
-                aware = true;
-                src.PlayOneShot(hit1, 0.8f);
-            }
-            if (owner == -1){
-                Itime = 0.06f;
-                
-                aware = true;
-                src.PlayOneShot(hit2, 0.8f);
-            }
-            else{
-                src.PlayOneShot(hit2, 0.8f);
-            }
-
-            shootDelay +=1f;
-            if (Health > dmg){
-                TimeMan.tm.TimeFreeze(0.11f);
-                Health -= dmg;
-            }
-            else{
-                TimeMan.tm.TimeFreeze(0.2f, 0.5f);
-                Health = 0;
-                Die();
-            }
-            State = StateEnum.Stunned;
-        }
-    }
+    
 
     
 
 
-    void Die(){
-        ScreenShake.camShake.Shake(0.2f, 0.2f);
-        Instantiate(gibs, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
+   
 }
