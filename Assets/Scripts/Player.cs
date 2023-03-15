@@ -97,6 +97,10 @@ public class Player : MonoBehaviour, IDamagable{
     private Vector3 startPos; //picks new pos every 3 seconds, moving from this position will produce footsteps
     private float elapsed;
     void Update(){
+        if (GameMan.GM.paused){
+            return;
+        }
+        
         if (m_Grounded){
             elapsed += Time.deltaTime;
             if (elapsed > 2f){
@@ -152,7 +156,7 @@ public class Player : MonoBehaviour, IDamagable{
             am.SetTrigger("Jump");
         }
 
-        if ((Input.GetKeyDown(KeyCode.W)) && !m_Grounded && jumpCache > 0){
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && !m_Grounded && jumpCache > 0){
             jumpCache--;
             if (jumpType == 1){
                 VerticalDash();
@@ -222,7 +226,7 @@ public class Player : MonoBehaviour, IDamagable{
         am.SetBool("Dash", true);
         armam.SetBool("Dash", true);
         armam.SetTrigger("DashT");
-        rb.AddForce(direction * (1.1f * moveV) );
+        rb.AddForce(direction * (1f * moveV) );
         StartCoroutine(DashCR());
     }
 

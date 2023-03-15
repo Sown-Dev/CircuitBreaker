@@ -14,7 +14,7 @@ public class Hover : MonoBehaviour{
     public float offset;
 
     private void Start(){
-        originalPos = transform.position;
+        originalPos = transform.localPosition;
     }
 
     void Update(){
@@ -26,6 +26,6 @@ public class Hover : MonoBehaviour{
 
         toPos = new Vector3(originalPos.x, originalPos.y + (up ? hoverAmt : 0) +offset, originalPos.z);
 
-        transform.position = Vector3.Lerp(transform.position, toPos, lerpAmt * Time.deltaTime);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, toPos, lerpAmt * Time.deltaTime);
     }
 }

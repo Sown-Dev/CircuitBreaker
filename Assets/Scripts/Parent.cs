@@ -8,12 +8,15 @@ public class Parent : MonoBehaviour{
     public bool copyTransform = true;
     public bool copyRot = true;
     private Vector3 offset;
+   //public Vector3 offset2;
     private void Awake(){
-        offset = transform.position;
+        offset = transform.localPosition;
     }
 
     private void Update(){
-        transform.position = parent.transform.position + offset;
-        transform.rotation = parent.transform.rotation;
+        if (copyTransform)
+            transform.position = parent.transform.position + offset;
+        if(copyRot)
+            transform.rotation = parent.transform.rotation;
     }
 }

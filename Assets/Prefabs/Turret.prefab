@@ -582,7 +582,7 @@ MonoBehaviour:
   marker: {fileID: 3923793835387518831}
   hpbar: {fileID: 4253497563661464375}
   Health: 0
-  maxHealth: 150
+  maxHealth: 160
   marked: 0
   redCol:
     serializedVersion: 2

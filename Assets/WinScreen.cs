@@ -15,7 +15,7 @@ public class WinScreen : MonoBehaviour{
         toA= show ? 1 : 0;
         cg.alpha = Mathf.Lerp(cg.alpha, toA, 10 * Time.deltaTime);
         cg.interactable = show;
-        cg.blocksRaycasts = !show;
+        cg.blocksRaycasts = show;
       
         if (show){
             if (Input.GetKeyDown(KeyCode.Space)){

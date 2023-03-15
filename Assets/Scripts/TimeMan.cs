@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TimeMan : MonoBehaviour{
     public static TimeMan tm;
-
+    public float TS;
     private void Awake(){
         Time.timeScale = 1f;
         tm = this;

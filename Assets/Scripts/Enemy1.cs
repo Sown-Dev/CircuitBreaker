@@ -65,6 +65,8 @@ public class Enemy1 : EnemyClass, IDamagable{
     
     
     void FixedUpdate(){
+        arms.transform.right = (shootpos - transform.position) * transform.localScale.x;
+
         //ground check
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
@@ -173,8 +175,6 @@ public class Enemy1 : EnemyClass, IDamagable{
                     lrTopos = (_player.transform.position - transform.position).normalized * range + transform.position;
                 }
 
-                arms.SetActive(true);
-                arms.transform.right = (shootpos - transform.position) * transform.localScale.x;
                 if (shootWait <= 0){
                     State = StateEnum.Shooting;
                     am.SetTrigger("Shoot");
@@ -209,7 +209,6 @@ public class Enemy1 : EnemyClass, IDamagable{
                 }
 
 
-                arms.SetActive(true);
                 arms.transform.right = (_player.transform.position - transform.position) * transform.localScale.x;
 
                 if (Itime <= 0 && shootDelay <= 0){
@@ -227,7 +226,6 @@ public class Enemy1 : EnemyClass, IDamagable{
                 break;
             }
             case (StateEnum.Passive):{
-                arms.SetActive(false);
                 RaycastHit2D bcheck = Physics2D.Raycast(transform.position, transform.right * -transform.localScale.x,
                     6, player.value);
 
@@ -252,13 +250,12 @@ public class Enemy1 : EnemyClass, IDamagable{
                 stunTime -= Time.deltaTime;
                 if (stunTime <= 0){
                     tased = false;
-                    State = StateEnum.Searching;
+                    State = StateEnum.Shooting;
                 }
                 break;
             }
 
             case (StateEnum.Searching):{
-                arms.SetActive(false);
                 //gives position of player
                 if (!Physics2D.Linecast(transform.position + new Vector3(0, 0.4f, 0), _player.transform.position,
                         level.value)){ //we rais the origin so that we cast from the head
@@ -328,6 +325,7 @@ public class Enemy1 : EnemyClass, IDamagable{
     private int stairVal; // how long ive been looking at an incline
 
     void Shoot(){
+        rb.AddForce(arms.transform.right * transform.localScale.x*-500);
         src.PlayOneShot(shootsfx,0.8f);
         GameObject bul = Instantiate(bullet, bulletSpawnPos.position, arms.transform.rotation);
         bul.transform.right = arms.transform.right * transform.localScale.x;
