@@ -19,23 +19,17 @@ public class Enemy1 : EnemyClass{
 
 
     
-    [HideInInspector] StateEnum State;
     private float xVel = 1600;
     private float jumpV = 900;
-    private float Itime = 0; //invincibilty time
 
 
     float shootDelay;
     public LineRenderer lr;
 
-
+    [HideInInspector] public Rigidbody2D rb;
+    
     private void Awake(){
-        taserFX.SetActive(false);
-        marker.SetActive(false);
-        State = StateEnum.Passive;
-        Health = maxHealth;
-        aware = false;
-        _player = GameObject.FindGameObjectWithTag("Player");
+        base.Awake();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
@@ -89,58 +83,25 @@ public class Enemy1 : EnemyClass{
         if (Itime > 0){
             Itime -= Time.deltaTime;
         }
+        Tick();
 
     }
 
-    private int visibility; //how many frames it has seen player. if above threshold, it shoots
     private int backvis; // same thing but for back
 
-    private float
-        awarenesstime; //how many frames since last saw player. if this is too high, it forgets about the player
-
-    private float range = 10;
+   
     private Vector3 shootpos;
     private float shootWait;
     private Vector2 lrTopos;
 
     void Tick(){
         lr.enabled = false;
-        taserFX.SetActive(tased && State== StateEnum.Stunned);
 
 
         //AI: start by raycasting:
+        base.Tick();
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position,
-            (_player.transform.position - transform.position).normalized, range, both.value);
-
-        if (hit.collider != null && State !=StateEnum.Stunned){
-            if (((1 << hit.collider.gameObject.layer) & player.value) != 0){
-                if (visibility < 40){
-                    visibility++;
-                }
-
-                lastSeen = hit.collider.transform.position; // set last seen to the hit.
-
-
-                if (State != StateEnum.Shooting && visibility > 30 && State != StateEnum.ShootingDelay){
-                    if (_player.transform.position.x > transform.position.x){
-                        transform.localScale = new Vector3(1, 1, 1);
-                    }
-                    else{
-                        transform.localScale = new Vector3(-1, 1, 1);
-                    }
-                    //can enter shooting from any state
-                    shootDelay = 0.4f; //start with some delay so you don't instantly die
-                    State = StateEnum.Shooting;
-                }
-            }
-            else{
-                visibility = 0;
-            }
-        }
-        else{
-            visibility = 0;
-        }
+      
 
 
         switch (State){
@@ -314,12 +275,9 @@ public class Enemy1 : EnemyClass{
         bul.transform.right = arms.transform.right * transform.localScale.x;
     }
 
-   
 
-    
-
-    
-
-
-   
+    public override void DetectPlayer(){
+        State = StateEnum.Shooting;
+        shootDelay = 0.8f;
+    }
 }

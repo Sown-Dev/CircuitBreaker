@@ -7,49 +7,31 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-public class Turret : EnemyClass, IDamagable{
+public class Turret : EnemyClass{
     //Gradients
     public Gradient redCol;
     public Gradient shootingCol;
 
     //Prefabs
     public GameObject bullet;
-    public GameObject blood;
-    public GameObject scrapgibs;
     public Transform bulletSpawnPos;
 
     //Health and Stats
     
-    [HideInInspector] StateEnum State;
 
     private float Itime = 0; //invincibilty time
 
     //Other Stuff
 
-    private GameObject _player;
-    private bool aware; //whether or not the enemy is aware of the player.
-    private Vector3 lastSeen;
-    public Animator am;
-    public LayerMask player;
-    public LayerMask level;
-    public LayerMask both;
+ 
     float shootDelay;
     public LineRenderer lr;
 
     //Audio
-    public AudioSource src;
-    public AudioClip hit;
     public AudioClip shoot;
     public AudioClip lockon;
 
-    private void Awake(){
-        marker.SetActive(false);
-        State = StateEnum.Passive;
-        Health = maxHealth;
-        aware = false;
-        _player = GameObject.FindGameObjectWithTag("Player");
-    }
-
+   
     
 
     void FixedUpdate(){
@@ -83,7 +65,6 @@ public class Turret : EnemyClass, IDamagable{
     private float
         awarenesstime; //how many frames since last saw player. if this is too high, it forgets about the player
 
-    private float range = 10;
     private Vector3 shootpos;
     private float shootWait;
     private Vector2 lrTopos;
@@ -91,39 +72,15 @@ public class Turret : EnemyClass, IDamagable{
     int burst;
     public int maxBurst=4;
     public float shotWaitMax = 0.08f;
-    void Tick(){
+    public void Tick(){
+        base.Tick();
         lr.enabled = false;
         //Have Raycast behind to detect player if they are there for long enough:
 
 
         //AI: start by raycasting:
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position,
-            (_player.transform.position - transform.position).normalized, range, both.value);
-
-        if (hit.collider != null){
-            if (((1 << hit.collider.gameObject.layer) & player.value) != 0){
-                if (visibility < 40){
-                    visibility++;
-                }
-
-                lastSeen = hit.collider.transform.position; // set last seen to the hit.
-
-
-                if (State != StateEnum.Shooting && visibility > 30 && State != StateEnum.ShootingDelay){
-                    //can enter shooting from any state
-                    shootDelay = 1f; //start with some delay so you don't instantly die
-                    State = StateEnum.Shooting;
-                }
-            }
-            else{
-                visibility = 0;
-            }
-        }
-        else{
-            visibility = 0;
-        }
-
+        
        
         switch (State){
             case (StateEnum.ShootingDelay):{
@@ -156,6 +113,14 @@ public class Turret : EnemyClass, IDamagable{
                     }
                 }
 
+                break;
+            }
+            case(StateEnum.Stunned):{
+                stunTime -= Time.deltaTime;
+                if (stunTime <= 0){
+                    tased = false;
+                    State = StateEnum.Shooting;
+                }
                 break;
             }
             case (StateEnum.Shooting):{
@@ -236,75 +201,6 @@ public class Turret : EnemyClass, IDamagable{
         bul.transform.right = turretHead.transform.right * -transform.localScale.x;
     }
 
-    private void OnDrawGizmos(){
-        Gizmos.color = Color.blue;
-        //Gizmos.DrawLine(transform.position, transform.position + ((_player.transform.position-transform.position).normalized * 10));
-        Gizmos.DrawLine(transform.position - new Vector3(0, 0.4f, 0),
-            transform.position - new Vector3(0, 0.4f, 0) + ((transform.right * transform.localScale.x) * 0.8f));
-
-        Gizmos.DrawLine(transform.position, transform.position + ((transform.right * -transform.localScale.x) * 6f));
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right * transform.localScale.x, 10,
-            player.value);
-
-        if (hit.collider != null){
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, hit.collider.gameObject.transform.position);
-        }
-
-        if (State == StateEnum.Searching){
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position + new Vector3(0, 0.4f, 0), lastSeen);
-        }
-        //Handles.Label(transform.position+ new Vector3(0, 1, 0), State.ToString());
-    }
-
-    enum StateEnum{
-        Passive = 1,
-        Searching = 2,
-        Shooting = 3,
-        ShootingDelay = 4
-    };
-
-    public void takeDamage(int dmg, Vector3 hit, bool tazer, float stun, int owner){
-        //If marked, double damage
-        dmg *= marked ? 2 : 1;
-
-        Instantiate(blood, hit, Quaternion.identity);
-        if (Itime <= 0){
-            am.SetTrigger("Hit");
-            if (owner == 0){
-                Itime = 0.09f;
-                
-                aware = true;
-                State = StateEnum.Searching;
-                
-            }
-            if (owner == -1){
-                Itime = 0.09f;
-                
-                aware = true;
-                State = StateEnum.Searching;
-            }
-            src.PlayOneShot(this.hit, 0.3f);
-            shootDelay += 1f;
-            if (Health > dmg){
-                TimeMan.tm.TimeFreeze(0.11f);
-                Health -= dmg;
-            }
-            else{
-                TimeMan.tm.TimeFreeze(0.2f, 0.5f);
-                Health = 0;
-                Die();
-            }
-        }
-    }
-    
-
-
-    void Die(){
-        ScreenShake.camShake.Shake(0.2f, 0.2f);
-        Instantiate(scrapgibs, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
+   
+   
 }

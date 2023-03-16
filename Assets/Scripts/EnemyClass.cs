@@ -1,5 +1,6 @@
 ﻿using System;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
@@ -32,12 +33,12 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     //Health and Stats
 
     [HideInInspector] public StateEnum State;
-    private float Itime = 0; //invincibilty time
+    [HideInInspector] public float Itime = 0; //invincibilty time
 
     //Other Stuff
 
     [HideInInspector] public GameObject _player;
-    [HideInInspector] public Rigidbody2D rb;
+
     [HideInInspector] public bool aware; //whether or not the enemy is aware of the player.
     [HideInInspector] public Vector3 lastSeen;
     public Animator am;
@@ -46,14 +47,13 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     public LayerMask both;
 
 
-    private void Awake(){
+    public void Awake(){
         taserFX.SetActive(false);
         marker.SetActive(false);
         State = StateEnum.Passive;
         Health = maxHealth;
         aware = false;
         _player = GameObject.FindGameObjectWithTag("Player");
-        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
 
@@ -74,10 +74,9 @@ public class EnemyClass : MonoBehaviour, IDamagable{
         Tick();
     }
 
-    private int visibility;
+    [HideInInspector] public int visibility;
 
-    private float
-        awarenesstime;
+    [HideInInspector] public float awarenesstime;
 
     public float range = 10;
 
@@ -97,19 +96,21 @@ public class EnemyClass : MonoBehaviour, IDamagable{
                     visibility++;
                 }
 
+            Debug.Log(visibility);
                 lastSeen = hit.collider.transform.position; // set last seen to the hit.
 
 
-                if (State != StateEnum.Shooting && visibility > 30 && State != StateEnum.ShootingDelay){
+                if (State != StateEnum.Shooting && visibility > 20 && State != StateEnum.ShootingDelay){
+                    
                     if (_player.transform.position.x > transform.position.x){
-                        transform.localScale = new Vector3(1, 1, 1);
+                        transform.localScale = new Vector3(1, transform.localScale.y, 1);
                     }
                     else{
-                        transform.localScale = new Vector3(-1, 1, 1);
+                        transform.localScale = new Vector3(-1,  transform.localScale.y, 1);
                     }
 
                     //can enter shooting from any state
-                    State = StateEnum.Shooting;
+                    DetectPlayer();
                 }
             }
             else{
@@ -132,12 +133,6 @@ public class EnemyClass : MonoBehaviour, IDamagable{
                 break;
             }
             case (StateEnum.Stunned):{
-                stunTime -= Time.deltaTime;
-                if (stunTime <= 0){
-                    tased = false;
-                    State = StateEnum.Shooting;
-                }
-
                 break;
             }
 
@@ -151,6 +146,9 @@ public class EnemyClass : MonoBehaviour, IDamagable{
 
     [HideInInspector] public float stunTime = 0;
 
+    private void OnDrawGizmos(){
+        Handles.Label(transform.position+(Vector3)Vector2.up,State.ToString());
+    }
 
     public enum StateEnum{
         Passive = 1,
@@ -163,6 +161,7 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     [HideInInspector] public bool tased = false;
 
     public void takeDamage(int dmg, Vector3 hit, bool tazer, float stun, int owner){
+        Debug.Log("hit" + dmg);
         //If marked, double damage
         tased = tazer;
         dmg *= marked ? 2 : 1;
@@ -208,4 +207,10 @@ public class EnemyClass : MonoBehaviour, IDamagable{
         Instantiate(gibs, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
+
+    public virtual void DetectPlayer(){
+        State = StateEnum.Shooting;
+    }
+
+   
 }
