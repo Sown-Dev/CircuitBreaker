@@ -146,8 +146,8 @@ public class EnemyClass : MonoBehaviour, IDamagable{
 
     [HideInInspector] public float stunTime = 0;
 
-    private void OnDrawGizmos(){
-        Handles.Label(transform.position+(Vector3)Vector2.up,State.ToString());
+    public void OnDrawGizmos(){
+        Handles.Label(transform.position+(Vector3)(Vector2.up*1.5f),State.ToString());
     }
 
     public enum StateEnum{

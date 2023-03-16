@@ -63,6 +63,7 @@ public class SawDrone : EnemyClass{
     }
 
     private void OnDrawGizmos(){
+        base.OnDrawGizmos();
         float ud = 1.5f;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + (Vector2.left * ud));
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + (Vector2.down * ud));

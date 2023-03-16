@@ -143,13 +143,13 @@ MonoBehaviour:
   am: {fileID: 0}
   player:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   level:
     serializedVersion: 2
     m_Bits: 512
   both:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 640
   src: {fileID: 4537697754300365587}
   hit1: {fileID: 0}
   hit2: {fileID: 0}
