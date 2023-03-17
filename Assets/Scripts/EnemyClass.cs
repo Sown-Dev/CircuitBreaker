@@ -21,7 +21,7 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     }
 
     private void Update(){
-        hpbar.enabled = Health > maxHealth;
+        hpbar.enabled = Health < maxHealth;
         hpbar.fillAmount = Health / maxHealth;
     }
 
@@ -63,14 +63,11 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     public AudioClip hit2;
 
 
-    void FixedUpdate(){
+    public void FixedUpdate(){
         am.SetInteger("State", (int)State);
-
-
-        if (Itime > 0){
+        if (Itime >= 0){
             Itime -= Time.deltaTime;
         }
-
         Tick();
     }
 
@@ -96,7 +93,6 @@ public class EnemyClass : MonoBehaviour, IDamagable{
                     visibility++;
                 }
 
-            Debug.Log(visibility);
                 lastSeen = hit.collider.transform.position; // set last seen to the hit.
 
 
@@ -161,7 +157,6 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     [HideInInspector] public bool tased = false;
 
     public void takeDamage(int dmg, Vector3 hit, bool tazer, float stun, int owner){
-        Debug.Log("hit" + dmg);
         //If marked, double damage
         tased = tazer;
         dmg *= marked ? 2 : 1;
@@ -203,7 +198,7 @@ public class EnemyClass : MonoBehaviour, IDamagable{
 
 
     public void Die(){
-        ScreenShake.camShake.Shake(0.2f, 0.2f);
+        ScreenShake.camShake.Shake(0.3f, 0.3f);
         Instantiate(gibs, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

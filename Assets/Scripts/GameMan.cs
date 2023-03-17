@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class GameMan : MonoBehaviour{
@@ -94,5 +96,10 @@ public class GameMan : MonoBehaviour{
         SceneManager.LoadScene(0);
     }
 
+    //Settings functions:
+    public AudioMixer mixer;
+    public void SetSoundVolume(float vol){
+        mixer.SetFloat("Volume", vol);
+    }
 
 }

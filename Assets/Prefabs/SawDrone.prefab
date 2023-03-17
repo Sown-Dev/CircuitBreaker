@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8631160243648783952}
   - component: {fileID: 1042015406385350534}
   - component: {fileID: 4537697754300365587}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SawDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   aware: 0
   lastSeen: {x: 0, y: 0, z: 0}
-  am: {fileID: 0}
+  am: {fileID: 1599413415512388280}
   player:
     serializedVersion: 2
     m_Bits: 128
@@ -151,8 +151,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 640
   src: {fileID: 4537697754300365587}
-  hit1: {fileID: 0}
-  hit2: {fileID: 0}
+  hit1: {fileID: 8300000, guid: 7d1a10c4db7d7ec489cf3974da4dacb6, type: 3}
+  hit2: {fileID: 8300000, guid: 7d1a10c4db7d7ec489cf3974da4dacb6, type: 3}
   visibility: 0
   awarenesstime: 0
   range: 12
@@ -198,10 +198,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.6
-  m_LinearDrag: 0.6
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_Mass: 0.8
+  m_LinearDrag: 0.8
+  m_AngularDrag: 0.2
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

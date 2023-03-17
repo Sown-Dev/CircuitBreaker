@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Random = UnityEngine.Random;
 
 public class SawDrone : EnemyClass{
     private Rigidbody2D rb;
@@ -15,6 +16,7 @@ public class SawDrone : EnemyClass{
     }
 
     void FixedUpdate(){
+        base.FixedUpdate();
         Stabilization();
 
         Tick();
@@ -30,9 +32,11 @@ public class SawDrone : EnemyClass{
 
         //hover
         if (rb.velocity.y < -0.2f){
-            rb.AddForce(transform.up*900f*Time.deltaTime);
-            rb.AddForce(Vector2.up*100f*Time.deltaTime);
+            //rb.AddForce(transform.up*900f*Time.deltaTime);
+            //rb.AddForce(Vector2.up*100f*Time.deltaTime);
         }
+        //random movement
+        rb.AddForce( Random.insideUnitCircle.normalized*Random.Range(0,2f));
 
         float ud = 1.5f;
         float amt = 500f;
@@ -73,6 +77,7 @@ public class SawDrone : EnemyClass{
                 Vector2.right, ud).transform.position));
     }
 
+    public float chaseVel = 370;
     void Tick(){
         base.Tick();
         switch (State){
@@ -80,19 +85,27 @@ public class SawDrone : EnemyClass{
                 break;
             }
             case (StateEnum.Shooting):{
+                rb.velocity *= 0.99f;
+                light.color = new Color(1, 0.6f, 0.5f, 1);
                 if (_player.transform.position.x > transform.position.x){
-                    transform.localScale = new Vector3(1, transform.localScale.y, 1);
-                }
-                else{
                     transform.localScale = new Vector3(-1, transform.localScale.y, 1);
                 }
-                rb.AddForce((_player.transform.position - transform.position) * 100);
+                else{
+                    transform.localScale = new Vector3(1, transform.localScale.y, 1);
+                }
+                rb.AddForce((_player.transform.position - transform.position).normalized * chaseVel*Time.deltaTime
+                ); //have higher impact on Y
                 break;
             }
             case (StateEnum.Passive):{
                 break;
             }
             case (StateEnum.Stunned):{
+                stunTime -= Time.deltaTime;
+                if (stunTime <= 0){
+                    tased = false;
+                    State = StateEnum.Shooting;
+                }
                 break;
             }
 

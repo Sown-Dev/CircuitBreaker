@@ -16,11 +16,6 @@ public class Turret : EnemyClass{
     public GameObject bullet;
     public Transform bulletSpawnPos;
 
-    //Health and Stats
-    
-
-    private float Itime = 0; //invincibilty time
-
     //Other Stuff
 
  
@@ -59,12 +54,9 @@ public class Turret : EnemyClass{
         Tick();
     }
 
-    private int visibility; //how many frames it has seen player. if above threshold, it shoots
     private int backvis; // same thing but for back
 
-    private float
-        awarenesstime; //how many frames since last saw player. if this is too high, it forgets about the player
-
+   
     private Vector3 shootpos;
     private float shootWait;
     private Vector2 lrTopos;
