@@ -16,12 +16,17 @@ public class GameMan : MonoBehaviour{
 
     private int currentScene;
     private void Awake(){
-        ds = GameObject.FindGameObjectWithTag("DeathScreen").GetComponent<DeathScreen>();
+        //ds = GameObject.FindGameObjectWithTag("DeathScreen").GetComponent<DeathScreen>();
         DontDestroyOnLoad(gameObject);
+        if (SceneManager.GetActiveScene().buildIndex > 0){
+            Start();
+        }
         
         if (GM == null){
             GM = this;
             
+            //OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+
         }
         else{
             Destroy(gameObject);
@@ -34,6 +39,7 @@ public class GameMan : MonoBehaviour{
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode){
+        Debug.Log("loaded");
         ds = GameObject.FindGameObjectWithTag("DeathScreen").GetComponent<DeathScreen>();
         currentScene = scene.buildIndex;
         pausemenucg.alpha = 0;
