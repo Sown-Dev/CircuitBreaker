@@ -6,13 +6,15 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class GameMan : MonoBehaviour{
+    public GameObject player;
     //just some stats
     public int deaths;
     
     //important stuff
     private DeathScreen ds;
     public static GameMan GM=null;
-    
+
+    private int currentScene;
     private void Awake(){
         ds = GameObject.FindGameObjectWithTag("DeathScreen").GetComponent<DeathScreen>();
         DontDestroyOnLoad(gameObject);
@@ -33,6 +35,7 @@ public class GameMan : MonoBehaviour{
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode){
         ds = GameObject.FindGameObjectWithTag("DeathScreen").GetComponent<DeathScreen>();
+        currentScene = scene.buildIndex;
         pausemenucg.alpha = 0;
         settingscg.alpha = 0;
     }
@@ -82,8 +85,9 @@ public class GameMan : MonoBehaviour{
 
     }
 
-    public void Restart(){
+    public void Start(){
         SceneManager.LoadScene(1);
+        Instantiate(player);
     }
 
     public void Win(){
@@ -93,7 +97,7 @@ public class GameMan : MonoBehaviour{
 
     IEnumerator ReturnToMenu(){
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(currentScene+1);
     }
 
     //Settings functions:
@@ -101,5 +105,7 @@ public class GameMan : MonoBehaviour{
     public void SetSoundVolume(float vol){
         mixer.SetFloat("Volume", vol);
     }
+    
+    
 
 }

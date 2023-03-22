@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
@@ -64,6 +63,7 @@ public class SawDrone : EnemyClass{
             light.color=Color.red;
             rb.AddForce(Vector2.left * amt * Time.deltaTime);
         }
+        
     }
 
     private void OnDrawGizmos(){
@@ -71,6 +71,8 @@ public class SawDrone : EnemyClass{
         float ud = 1.5f;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + (Vector2.left * ud));
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + (Vector2.down * ud));
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + (Vector2.right * ud));
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + (Vector2.up * ud));
         if (Physics2D.Raycast(transform.position,
                 Vector2.right, ud).collider != null)
             Gizmos.DrawLine(transform.position, (Physics2D.Raycast(transform.position,

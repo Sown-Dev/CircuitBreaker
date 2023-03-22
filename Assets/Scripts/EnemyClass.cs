@@ -129,6 +129,7 @@ public class EnemyClass : MonoBehaviour, IDamagable{
                 break;
             }
             case (StateEnum.Stunned):{
+                
                 break;
             }
 
@@ -143,7 +144,7 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     [HideInInspector] public float stunTime = 0;
 
     public void OnDrawGizmos(){
-        Handles.Label(transform.position+(Vector3)(Vector2.up*1.5f),State.ToString());
+        //Handles.Label(transform.position+(Vector3)(Vector2.up*1.5f),State.ToString());
     }
 
     public enum StateEnum{

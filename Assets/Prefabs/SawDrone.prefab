@@ -160,6 +160,7 @@ MonoBehaviour:
   stunTime: 0
   tased: 0
   light: {fileID: 8921057391203397238}
+  chaseVel: 370
 --- !u!61 &8631160243648783952
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5831,7 +5832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4070352538890099736
 Transform:
   m_ObjectHideFlags: 0

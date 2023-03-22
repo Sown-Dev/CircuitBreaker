@@ -24,7 +24,7 @@ public class DeathScreen : MonoBehaviour{
       if (enabled){
          if (Input.GetKeyDown(KeyCode.R)){
             enabled = false;
-            GameMan.GM.Restart();
+            GameMan.GM.Start();
             
          }
       }

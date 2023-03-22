@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour, IDamagable{
     public CinemachineVirtualCamera cm;
     public GameObject swordParticles;
-
+    public ReloadCircle rc;
     public ItemMan[] itemMans;
     [HideInInspector] public int shields=1;
 
@@ -80,6 +80,7 @@ public class Player : MonoBehaviour, IDamagable{
     }
 
     private float dashCooldown;
+    public float dashCooldownMax = 0.61f;
 
     //blocking vars:
     private bool blocking;
@@ -100,6 +101,8 @@ public class Player : MonoBehaviour, IDamagable{
         if (GameMan.GM.paused){
             return;
         }
+
+        rc.fillAmt = dashCooldown / dashCooldownMax;
         
         if (m_Grounded){
             elapsed += Time.deltaTime;
@@ -222,7 +225,7 @@ public class Player : MonoBehaviour, IDamagable{
     void Dash(Vector3 direction){
         src.PlayOneShot(electricsword,0.06f);
         rb.velocity *= 0.16f;
-        dashCooldown += 0.6f;
+        dashCooldown += dashCooldownMax;
         am.SetBool("Dash", true);
         armam.SetBool("Dash", true);
         armam.SetTrigger("DashT");
