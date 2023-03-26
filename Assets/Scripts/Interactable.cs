@@ -8,7 +8,7 @@ public class Interactable : MonoBehaviour{
     [HideInInspector]public bool interactable = true;
 
     [HideInInspector]public UpgradeScreen us;
-    void Awake(){
+    void Start(){
         us = GameObject.FindGameObjectWithTag("UpgradeScreen").GetComponent<UpgradeScreen>();
         player = GameObject.FindGameObjectWithTag("Player");
         m = gameObject.GetComponent<SpriteRenderer>().material;

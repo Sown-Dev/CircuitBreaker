@@ -47,7 +47,7 @@ public class EnemyClass : MonoBehaviour, IDamagable{
     public LayerMask both;
 
 
-    public void Awake(){
+    public void Start(){
         taserFX.SetActive(false);
         marker.SetActive(false);
         State = StateEnum.Passive;

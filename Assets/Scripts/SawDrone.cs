@@ -9,8 +9,8 @@ public class SawDrone : EnemyClass{
     private Rigidbody2D rb;
     public Light2D light;
 
-    private void Awake(){
-        base.Awake();
+    private void Start(){
+        base.Start();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 

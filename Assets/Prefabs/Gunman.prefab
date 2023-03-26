@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 178791037}
   - component: {fileID: 178791035}
   - component: {fileID: 5227295355405922297}
+  - component: {fileID: 16988304355086694}
   m_Layer: 8
   m_Name: Gunman
   m_TagString: Untagged
@@ -344,6 +345,46 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &16988304355086694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322078094504747123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 0
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: 0.13023163, y: -0.6418558, z: 0}
+  - {x: 0.06291087, y: -0.63720083, z: 0}
+  - {x: 0.0024462044, y: -0.08371651, z: 0}
+  - {x: -0.09057637, y: -0.0930188, z: 0}
+  - {x: -0.15569218, y: -0.63254976, z: 0}
+  - {x: -0.2394125, y: -0.6232475, z: 0}
+  - {x: -0.14883614, y: -0.023255676, z: 0}
+  - {x: -0.23476137, y: 0.33023396, z: 0}
+  - {x: -0.025460556, y: 0.40930316, z: 0}
+  - {x: -0.05336733, y: 0.6465107, z: 0}
+  - {x: 0.10477106, y: 0.6139529, z: 0}
+  - {x: 0.13732897, y: 0.47907007, z: 0}
+  - {x: 0.039655253, y: 0.38139638, z: 0}
+  - {x: 0.15813841, y: 0.11162707, z: 0}
+  - {x: 0.395346, y: -0.15348727, z: 0}
+  - {x: 0.31872296, y: -0.18139023, z: 0}
+  - {x: 0.067562, y: -0.065112025, z: 0}
+  m_ShapePathHash: 1097087332
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 91472
 --- !u!1 &322078095003014782
 GameObject:
   m_ObjectHideFlags: 0

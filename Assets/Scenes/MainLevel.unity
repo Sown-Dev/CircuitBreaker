@@ -6090,7 +6090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757a1a95c9e14020bec6d9f4df471645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 2304589206125123912, guid: ffeb382364e5a8344a1cc9a1ca3fd77a, type: 3}
   deaths: 0
   paused: 0
   settingsOn: 0

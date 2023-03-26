@@ -28,8 +28,8 @@ public class Enemy1 : EnemyClass{
 
     [HideInInspector] public Rigidbody2D rb;
     
-    private void Awake(){
-        base.Awake();
+    private void Start(){
+        base.Start();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
